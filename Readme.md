@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Sergey D](https://up.htmlacademy.ru/javascript/20/user/412507).
-* Наставник: `Неизвестно`.
+* Наставник: `Вадим Попов`.
 
 ---
 
