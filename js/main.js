@@ -56,5 +56,26 @@ function objGererator() {
   return arr;
 }
 var data = objGererator();
-//var
-console.log(objGererator());
+//console.log(data);
+
+var template = document.querySelector('#pin').content;
+var templateButton = template.querySelector('.map__pin');
+var mapPins = document.querySelector('.map__pins');
+
+var domElementMaker = function (item) {
+  var mapPin = templateButton.cloneNode(true);
+  var mapPinImg = mapPin.querySelector('img');
+  mapPinImg.src = item.author.avatar;
+  mapPinImg.alt = item.offer.title;
+  mapPin.style.left = item.location.x +25 + 'px';
+  mapPin.style.top = item.location.y -70 + 'px';
+
+  return mapPin;
+};
+
+function domRender() {
+  for (var i = 0; i < data.length; i++) {
+    mapPins.appendChild(domElementMaker(data[i]));
+  }
+}
+domRender();
