@@ -67,8 +67,8 @@ var domElementMaker = function (item) {
   var mapPinImg = mapPin.querySelector('img');
   mapPinImg.src = item.author.avatar;
   mapPinImg.alt = item.offer.title;
-  mapPin.style.left = item.location.x +25 + 'px';
-  mapPin.style.top = item.location.y -70 + 'px';
+  mapPin.style.left = item.location.x + 25 + 'px';
+  mapPin.style.top = item.location.y - 70 + 'px';
 
   return mapPin;
 };
