@@ -70,18 +70,18 @@ var domPinElementMaker = function (item) {
 };
 
 // Заполняем DOM пинами
-function domRender() {
+var domRender = function () {
   for (var i = 0; i < data.length; i++) {
     mapPins.appendChild(domPinElementMaker(data[i]));
   }
-}
+};
 domRender();
 
 var adTemplate = document.querySelector('#card').content;
 var mapsArticle = adTemplate.querySelector('.map__card').cloneNode(true);
 
 // Супер-функция создания карточки объявления, наверняка можно разнести на 2 а то и три разные
-var domCardElementMaker = function (data) {
+var domCardElementMaker = function (datas) {
   // Инициализация переменных для карточки описания
   var card = mapsArticle.cloneNode(false);
   var cardTitle = mapsArticle.querySelector('.popup__title').cloneNode(true);
@@ -96,13 +96,13 @@ var domCardElementMaker = function (data) {
   var cardAvatar = mapsArticle.querySelector('.popup__avatar').cloneNode(true);
 
   // Заполнение переменных данными из массива объектов
-  cardTitle.textContent = data.offer.title;
-  cardAddress.textContent = data.offer.address;
-  cardPrice.textContent = data.offer.price + ' ₽/ночь';
+  cardTitle.textContent = datas.offer.title;
+  cardAddress.textContent = datas.offer.address;
+  cardPrice.textContent = datas.offer.price + ' ₽/ночь';
 
   // Выводим красиво вид жилища
   var apartments = '';
-  switch (data.offer.type) {
+  switch (datas.offer.type) {
     case 'palace': apartments = 'Дворец';
       break;
     case 'flat': apartments = 'Квартира';
@@ -116,14 +116,14 @@ var domCardElementMaker = function (data) {
       break;
   }
   cardPopupType.textContent = apartments + ' ₽/ночь';
-  cardCapacity.textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
-  cardTextTime.textContent = 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
+  cardCapacity.textContent = datas.offer.rooms + ' комнаты для ' + datas.offer.guests + ' гостей';
+  cardTextTime.textContent = 'Заезд после ' + datas.offer.checkin + ', выезд до ' + datas.offer.checkout;
 
   var feature = '';
   var myString = '';
-  for (var n = 0; n < data.offer.features.length; n++) {
+  for (var n = 0; n < datas.offer.features.length; n++) {
     // Выводим красиво список улучшений жилища
-    switch (data.offer.features[n]) {
+    switch (datas.offer.features[n]) {
       case 'wifi': feature = 'Wi-Fi';
         break;
       case 'dishwasher': feature = 'Посудомоечная машина';
@@ -143,13 +143,13 @@ var domCardElementMaker = function (data) {
     myString += feature + ' ';
   }
   cardFeatures.textContent = myString;
-  cardDescription.textContent = data.offer.description;
-  cardAvatar.src = data.author.avatar;
+  cardDescription.textContent = datas.offer.description;
+  cardAvatar.src = datas.author.avatar;
 
   // Заполняем cardPhotos коллекцией заполненных img текущего объекта
-  for (var j = 0; j < data.offer.photos.length; j++) {
+  for (var j = 0; j < datas.offer.photos.length; j++) {
     var cardImg = mapsArticle.querySelector('.popup__photos').querySelector('.popup__photo').cloneNode(true);
-    cardImg.src = data.offer.photos[j];
+    cardImg.src = datas.offer.photos[j];
     cardPhotos.appendChild(cardImg);
   }
 
@@ -181,9 +181,9 @@ var mainMap = document.querySelector('.map');
 var mapFiltersContainer = document.querySelector('.map__filters-container');
 
 // Добавляем карточки в цикле в дом
-function domCardRender(data) {
-  for (var k = 0; k < data.length; k++) {
-    mainMap.insertBefore(domCardElementMaker(data[k]), mapFiltersContainer);
+var domCardRender = function domCardRender(datas) {
+  for (var k = 0; k < datas.length; k++) {
+    mainMap.insertBefore(domCardElementMaker(datas[k]), mapFiltersContainer);
   }
-}
+};
 domCardRender(data);
