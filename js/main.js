@@ -57,7 +57,7 @@ var pinTemplate = document.querySelector('#pin').content;
 var templateButton = pinTemplate.querySelector('.map__pin');
 var mapPins = document.querySelector('.map__pins');
 
-//Создаем пин
+// Создаем пин
 var domPinElementMaker = function (item) {
   var mapPin = templateButton.cloneNode(true);
   var mapPinImg = mapPin.querySelector('img');
