@@ -1,5 +1,29 @@
 'use strict';
 
+var Apartments = {
+  'palace': 'Дворец',
+  'flat': 'Квартира',
+  'house': 'Дом',
+  'bungalo': 'Бунгало',
+  '': 'Палатка'
+};
+
+var Features = {
+  'wifi': 'Wi-Fi',
+  'dishwasher': 'Посудомоечная машина',
+  'parking': 'Парковка',
+  'washer': 'Стиральная машина',
+  'elevator': 'Лифт',
+  'conditioner': 'Кондиционер'
+};
+
+// Заполняет карточку предложения
+var myAppend = function (card, optionsArr) {
+  for (var o = 0; o < optionsArr.length; o++) {
+    card.appendChild(optionsArr[o]);
+  }
+};
+
 // Функция генерации 8-ми объектов упакованных в массив
 function objGererator() {
   var arr = [];
@@ -8,17 +32,6 @@ function objGererator() {
   var getRandomArbitrary = function (min, max) {
     return parseInt(Math.random() * (max - min) + min, 10);
   };
-
-  var Apartments = {
-    'palace': 'Дворец',
-    'flat': 'Квартира',
-    'house': 'Дом',
-    'bungalo': 'Бунгало',
-    '': 'Палатка'
-  };
-  // var getApartment = function (prop) {
-  //   return Apartments[prop];
-  // };
 
   var types = ['palace', 'flat', 'house', 'bungalo'];
   var checkins = ['12:00', '13:00', '14:00'];
@@ -31,7 +44,6 @@ function objGererator() {
   var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var map = document.querySelector('.map');
   var mapWidth = document.querySelector('.map').clientWidth;
-
 
   map.classList.remove('map--faded');
 
@@ -98,15 +110,6 @@ var mapsArticle = adTemplate.querySelector('.map__card').cloneNode(true);
 // Супер-функция создания карточки объявления, наверняка можно разнести на 2 а то и три разные
 var domCardElementMaker = function (dataSet) {
   // Инициализация переменных для карточки описания
-
-  //Если это раскоментить, то все работает
-  // var Apartments = {
-  //   'palace': 'Дворец',
-  //   'flat': 'Квартира',
-  //   'house': 'Дом',
-  //   'bungalo': 'Бунгало',
-  //   '': 'Палатка'
-  // };
   var card = mapsArticle.cloneNode(false);
   var cardTitle = mapsArticle.querySelector('.popup__title').cloneNode(true);
   var cardAddress = mapsArticle.querySelector('.popup__text--address').cloneNode(true);
@@ -123,53 +126,19 @@ var domCardElementMaker = function (dataSet) {
   cardTitle.textContent = dataSet.offer.title;
   cardAddress.textContent = dataSet.offer.address;
   cardPrice.textContent = dataSet.offer.price + ' ₽/ночь';
-
-  // Выводим красиво вид жилища
-  // var apartments = '';
-  // switch (dataSet.offer.type) {
-  //   case 'palace': apartments = 'Дворец';
-  //     break;
-  //   case 'flat': apartments = 'Квартира';
-  //     break;
-  //   case 'house': apartments = 'Дом';
-  //     break;
-  //   case 'bungalo': apartments = 'Бунгало';
-  //     break;
-
-  //   default: apartments = 'Палатка';
-  //     break;
-  // }
-
-  // REFERENCE_ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   cardPopupType.textContent = Apartments[dataSet.offer.type] + ' ₽/ночь';
-
-  // cardPopupType.textContent = apartments + ' ₽/ночь';
-  console.log(dataSet.offer.type);
   cardCapacity.textContent = dataSet.offer.rooms + ' комнаты для ' + dataSet.offer.guests + ' гостей';
   cardTextTime.textContent = 'Заезд после ' + dataSet.offer.checkin + ', выезд до ' + dataSet.offer.checkout;
 
-  var feature = '';
+  // Делаем красивый вывод опций в жилище. В конце ставится точечка.
   var myString = '';
-  for (var n = 0; n < dataSet.offer.features.length; n++) {
-    // Выводим красиво список улучшений жилища
-    switch (dataSet.offer.features[n]) {
-      case 'wifi': feature = 'Wi-Fi';
-        break;
-      case 'dishwasher': feature = 'Посудомоечная машина';
-        break;
-      case 'parking': feature = 'Парковка';
-        break;
-      case 'washer': feature = 'Стиральная машина';
-        break;
-      case 'elevator': feature = 'Лифт';
-        break;
-      case 'conditioner': feature = 'Кондиционер';
-        break;
-
-      default: feature = 'Ничего нет, вы изжаритесь тут от жары и похудеете от голода';
-        break;
+  var featureKeys = Object.keys(Features);
+  for (var n = 0; n < featureKeys.length; n++) {
+    if (!(featureKeys[n] === featureKeys[featureKeys.length - 1])) {
+      myString += Features[featureKeys[n]] + ', ';
+    } else {
+      myString += Features[featureKeys[n]] + '.';
     }
-    myString += feature + ' ';
   }
   cardFeatures.textContent = myString;
   cardDescription.textContent = dataSet.offer.description;
@@ -182,16 +151,6 @@ var domCardElementMaker = function (dataSet) {
     cardPhotos.appendChild(cardImg);
   }
 
-  // Добавляем к карточке объявления- заполненные переменные
-  card.appendChild(cardTitle);
-  card.appendChild(cardAddress);
-  card.appendChild(cardPrice);
-  card.appendChild(cardPopupType);
-  card.appendChild(cardCapacity);
-  card.appendChild(cardTextTime);
-  card.appendChild(cardFeatures);
-  card.appendChild(cardDescription);
-
   var imgs = cardPhotos.getElementsByTagName('img');
   // Этот прекрасный цикл удаляет все img с пустым src, которые любезно подсовывает академия
   for (var m = 0; m < imgs.length; m++) {
@@ -199,10 +158,11 @@ var domCardElementMaker = function (dataSet) {
       imgs[m].remove();
     }
   }
-  card.appendChild(cardPhotos);
-  card.appendChild(cardAvatar);
 
   // Возвращаем заполненную карточку
+  myAppend(card, [cardTitle, cardAddress, cardPrice, cardPopupType, cardCapacity, cardTextTime, cardFeatures, cardDescription, cardPhotos, cardAvatar]);
+
+  // card.append(cardTitle, cardAddress, cardPrice, cardPopupType, cardCapacity, cardTextTime, cardFeatures, cardDescription, cardPhotos, cardAvatar);
   return card;
 };
 
