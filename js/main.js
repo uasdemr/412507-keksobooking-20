@@ -2,28 +2,41 @@
 
 // Функция генерации 8-ми объектов упакованных в массив
 function objGererator() {
-  var Arr = [];
+  var arr = [];
 
   // Функция генерирует случайные числа в заданном диапазоне
   var getRandomArbitrary = function (min, max) {
     return parseInt(Math.random() * (max - min) + min, 10);
   };
 
-  var Types = ['palace', 'flat', 'house', 'bungalo'];
-  var Checkins = ['12:00', '13:00', '14:00'];
-  var Checkouts = ['12:00', '13:00', '14:00'];
-  var Photos = [
+  var Apartments = {
+    'palace': 'Дворец',
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'bungalo': 'Бунгало',
+    '': 'Палатка'
+  };
+  // var getApartment = function (prop) {
+  //   return Apartments[prop];
+  // };
+
+  var types = ['palace', 'flat', 'house', 'bungalo'];
+  var checkins = ['12:00', '13:00', '14:00'];
+  var checkouts = ['12:00', '13:00', '14:00'];
+  var photos = [
     'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
     'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
   ];
-  var Features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+  var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var map = document.querySelector('.map');
   var mapWidth = document.querySelector('.map').clientWidth;
+
+
   map.classList.remove('map--faded');
 
   for (var i = 1; i < 9; i++) {
-    Arr.push(
+    arr.push(
         {
           'author': {
             'avatar': 'img/avatars/user0' + i + '.png',
@@ -32,14 +45,14 @@ function objGererator() {
             'title': 'строка, заголовок предложения',
             'address': '' + getRandomArbitrary(0, 600) + ', ' + getRandomArbitrary(0, 600),
             'price': getRandomArbitrary(300, 2500),
-            'type': Types[getRandomArbitrary(0, Types.length)],
+            'type': types[getRandomArbitrary(0, types.length)],
             'rooms': getRandomArbitrary(1, 5),
             'guests': getRandomArbitrary(1, 10),
-            'checkin': Checkins[getRandomArbitrary(0, Checkins.length)],
-            'checkout': Checkouts[getRandomArbitrary(0, Checkouts.length)],
-            'Features': Features,
+            'checkin': checkins[getRandomArbitrary(0, checkins.length)],
+            'checkout': checkouts[getRandomArbitrary(0, checkouts.length)],
+            'features': features,
             'description': 'строка с описанием',
-            'Photos': Photos
+            'photos': photos
           },
           'location': {
             'x': getRandomArbitrary(0, mapWidth),
@@ -49,9 +62,9 @@ function objGererator() {
     );
 
   }
-  return Arr;
+  return arr;
 }
-var Data = objGererator();
+var data = objGererator();
 
 var pinTemplate = document.querySelector('#pin').content;
 var templateButton = pinTemplate.querySelector('.map__pin');
@@ -72,8 +85,8 @@ var domPinElementMaker = function (item) {
 // Заполняем DOM пинами через documentFragment
 var domRender = function () {
   var pinsFragment = document.createDocumentFragment();
-  for (var i = 0; i < Data.length; i++) {
-    pinsFragment.appendChild(domPinElementMaker(Data[i]));
+  for (var i = 0; i < data.length; i++) {
+    pinsFragment.appendChild(domPinElementMaker(data[i]));
   }
   mapPins.appendChild(pinsFragment);
 };
@@ -85,6 +98,15 @@ var mapsArticle = adTemplate.querySelector('.map__card').cloneNode(true);
 // Супер-функция создания карточки объявления, наверняка можно разнести на 2 а то и три разные
 var domCardElementMaker = function (dataSet) {
   // Инициализация переменных для карточки описания
+
+  //Если это раскоментить, то все работает
+  // var Apartments = {
+  //   'palace': 'Дворец',
+  //   'flat': 'Квартира',
+  //   'house': 'Дом',
+  //   'bungalo': 'Бунгало',
+  //   '': 'Палатка'
+  // };
   var card = mapsArticle.cloneNode(false);
   var cardTitle = mapsArticle.querySelector('.popup__title').cloneNode(true);
   var cardAddress = mapsArticle.querySelector('.popup__text--address').cloneNode(true);
@@ -103,29 +125,34 @@ var domCardElementMaker = function (dataSet) {
   cardPrice.textContent = dataSet.offer.price + ' ₽/ночь';
 
   // Выводим красиво вид жилища
-  var apartments = '';
-  switch (dataSet.offer.type) {
-    case 'palace': apartments = 'Дворец';
-      break;
-    case 'flat': apartments = 'Квартира';
-      break;
-    case 'house': apartments = 'Дом';
-      break;
-    case 'bungalo': apartments = 'Бунгало';
-      break;
+  // var apartments = '';
+  // switch (dataSet.offer.type) {
+  //   case 'palace': apartments = 'Дворец';
+  //     break;
+  //   case 'flat': apartments = 'Квартира';
+  //     break;
+  //   case 'house': apartments = 'Дом';
+  //     break;
+  //   case 'bungalo': apartments = 'Бунгало';
+  //     break;
 
-    default: apartments = 'Палатка';
-      break;
-  }
-  cardPopupType.textContent = apartments + ' ₽/ночь';
+  //   default: apartments = 'Палатка';
+  //     break;
+  // }
+
+  // REFERENCE_ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  cardPopupType.textContent = Apartments[dataSet.offer.type] + ' ₽/ночь';
+
+  // cardPopupType.textContent = apartments + ' ₽/ночь';
+  console.log(dataSet.offer.type);
   cardCapacity.textContent = dataSet.offer.rooms + ' комнаты для ' + dataSet.offer.guests + ' гостей';
   cardTextTime.textContent = 'Заезд после ' + dataSet.offer.checkin + ', выезд до ' + dataSet.offer.checkout;
 
   var feature = '';
   var myString = '';
-  for (var n = 0; n < dataSet.offer.Features.length; n++) {
+  for (var n = 0; n < dataSet.offer.features.length; n++) {
     // Выводим красиво список улучшений жилища
-    switch (dataSet.offer.Features[n]) {
+    switch (dataSet.offer.features[n]) {
       case 'wifi': feature = 'Wi-Fi';
         break;
       case 'dishwasher': feature = 'Посудомоечная машина';
@@ -149,9 +176,9 @@ var domCardElementMaker = function (dataSet) {
   cardAvatar.src = dataSet.author.avatar;
 
   // Заполняем cardPhotos коллекцией заполненных img текущего объекта
-  for (var j = 0; j < dataSet.offer.Photos.length; j++) {
+  for (var j = 0; j < dataSet.offer.photos.length; j++) {
     var cardImg = mapsArticle.querySelector('.popup__photos').querySelector('.popup__photo').cloneNode(true);
-    cardImg.src = dataSet.offer.Photos[j];
+    cardImg.src = dataSet.offer.photos[j];
     cardPhotos.appendChild(cardImg);
   }
 
@@ -191,4 +218,4 @@ var domCardRender = function domCardRender(dataSet) {
   }
   mainMap.insertBefore(cardsFragment, mapFiltersContainer);
 };
-domCardRender(Data);
+domCardRender(data);
