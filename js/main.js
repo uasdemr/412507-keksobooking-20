@@ -17,13 +17,6 @@ var Features = {
   'conditioner': 'Кондиционер'
 };
 
-// Заполняет карточку предложения
-var myAppend = function (card, optionsArr) {
-  for (var o = 0; o < optionsArr.length; o++) {
-    card.appendChild(optionsArr[o]);
-  }
-};
-
 // Функция генерации 8-ми объектов упакованных в массив
 function objGererator() {
   var arr = [];
@@ -159,10 +152,7 @@ var domCardElementMaker = function (dataSet) {
     }
   }
 
-  // Возвращаем заполненную карточку
-  myAppend(card, [cardTitle, cardAddress, cardPrice, cardPopupType, cardCapacity, cardTextTime, cardFeatures, cardDescription, cardPhotos, cardAvatar]);
-
-  // card.append(cardTitle, cardAddress, cardPrice, cardPopupType, cardCapacity, cardTextTime, cardFeatures, cardDescription, cardPhotos, cardAvatar);
+  card.append(cardTitle, cardAddress, cardPrice, cardPopupType, cardCapacity, cardTextTime, cardFeatures, cardDescription, cardPhotos, cardAvatar);
   return card;
 };
 
