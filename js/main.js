@@ -206,14 +206,12 @@ var mapPinMain = document.querySelector('.map__pin--main');
 mapPinMain.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
     formEnable(allFormsElemsArr);
-    setAddress(mapPinMain);
   }
 });
 
 mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.code === 'Enter') {
     formEnable(allFormsElemsArr);
-    setAddress(mapPinMain);
   }
 });
 
@@ -232,8 +230,107 @@ var setAddress = function (mainPin) {
     coordX = Math.floor(parseInt(mainPin.style.left, 10) + parseInt(mainPin.offsetWidth, 10) / 2);
     coordY = Math.floor(parseInt(mainPin.style.top, 10) - parseInt(mainPin.offsetHeight, 10));
   }
-  formAddress.value = coordX + ', ' + coordY;
+  formAddress.disabled = 'true';
+  formAddress.placeholder = coordX + ', ' + coordY;
 };
 window.addEventListener('load', function () {
   setAddress(mapPinMain);
+  typeCorrelator(type);
+});
+
+/**
+ * Непростая валидация
+ */
+
+// установки соответствия количества гостей (спальных мест) с количеством комнат
+adForm.addEventListener('submit', function (evt) {
+  //evt.preventDefault();
+  // Вызов функций валидации формы
+});
+
+var formTitleTest = function (title) {
+  return /^[a-zA-ZА-Яа-я]{30,100}$/.test(title);
+};
+
+var title = document.getElementById('title');
+title.addEventListener('input', function (evt) {
+  var msg = '';
+  if (formTitleTest(evt.target.value)) {
+    evt.target.setCustomValidity('');
+    evt.target.style.border = '';
+  } else {
+    msg = 'Количество символов заголовка должно быть в диапозоне от 30 до 100 символов. Вы набрали ' + evt.target.value.length;
+    evt.target.setCustomValidity(msg);
+    evt.target.style.border = '2px solid red';
+  }
+});
+
+var price = document.getElementById('price');
+/**
+ *
+ * @param {Objet} evt
+ * Проверяет соответствие цены. Она не должна превышать 1000000 р.
+ */
+var priceVerify = function (evt) {
+  var msg = '';
+  if (parseInt(evt.target.value, 10) <= 1000000 && parseInt(evt.target.value, 10) >= 0) {
+    evt.target.setCustomValidity('');
+    evt.target.style.border = '';
+  } else if (!Number(parseInt(evt.target.value, 10))) {
+    msg = 'Цена исчисляется в цифровом эквиваленте.';
+    evt.target.setCustomValidity(msg);
+    evt.target.style.border = '2px solid red';
+  } else {
+    msg = 'Максимальное число в поле Цена за ночь может быть равным 1000000. Вы ввели: ' + evt.target.value;
+    evt.target.setCustomValidity(msg);
+    evt.target.style.border = '2px solid red';
+  }
+};
+
+price.addEventListener('input', function (evt) {
+  priceVerify(evt);
+});
+
+/**
+ *
+ * @param {Object} type
+ * Изменяет атрибут min владельца события в соответствии с выбранным типом жилья
+ */
+var typeCorrelator = function (type) {
+  if (type.value === 'bungalo') {
+    price.min = 0;
+  } else if (type.value === 'flat') {
+    price.min = 1000;
+  } else if (type.value === 'house') {
+    price.min = 5000;
+  } else if (type.value === 'palace') {
+    price.min = 10000;
+  }
+};
+
+var type = document.getElementById('type');
+type.addEventListener('change', function () {
+  typeCorrelator(type);
+});
+
+/**
+ * «Время заезда» и «Время выезда»
+ */
+var timein = document.querySelector('#timein');
+var timeout = document.querySelector('#timeout');
+
+var adFormElementTimeSynhronizer = function (evt) {
+  if(evt.target.id === 'timein') {
+    timeout.value = evt.target.value;
+  } else if(evt.target.id === 'timeout') {
+    timein.value = evt.target.value;
+  }
+};
+
+timein.addEventListener('change', function (evt) {
+  adFormElementTimeSynhronizer(evt);
+});
+
+timeout.addEventListener('change', function (evt) {
+  adFormElementTimeSynhronizer(evt);
 });
