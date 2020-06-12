@@ -244,7 +244,7 @@ window.addEventListener('load', function () {
 
 // установки соответствия количества гостей (спальных мест) с количеством комнат
 adForm.addEventListener('submit', function (evt) {
-  //evt.preventDefault();
+  // evt.preventDefault();
   // Вызов функций валидации формы
 });
 
@@ -319,18 +319,53 @@ type.addEventListener('change', function () {
 var timein = document.querySelector('#timein');
 var timeout = document.querySelector('#timeout');
 
-var adFormElementTimeSynhronizer = function (evt) {
-  if(evt.target.id === 'timein') {
+var adFormElementTimeSynchronizer = function (evt) {
+  if (evt.target.id === 'timein') {
     timeout.value = evt.target.value;
-  } else if(evt.target.id === 'timeout') {
+  } else if (evt.target.id === 'timeout') {
     timein.value = evt.target.value;
   }
 };
 
 timein.addEventListener('change', function (evt) {
-  adFormElementTimeSynhronizer(evt);
+  adFormElementTimeSynchronizer(evt);
 });
 
 timeout.addEventListener('change', function (evt) {
-  adFormElementTimeSynhronizer(evt);
+  adFormElementTimeSynchronizer(evt);
+});
+
+/**
+ * Поле «Количество комнат» синхронизировано с полем «Количество мест»
+ */
+
+// всё делал на основе атрибутов value из разметки.
+
+var roomNumber = document.querySelector('#room_number');
+var roomsCapacitySynchronizer = function (objEvt) {
+  var capacity = document.querySelector('#capacity');
+  var select = document.createElement('select');
+  select.name = 'capacity';
+  select.id = 'capacity';
+  var num = parseInt(objEvt.target.value, 10);
+  var opt;
+  if (num === 100) {
+    opt = new Option();
+    opt.value = 0;
+    opt.text = 'Не для гостей';
+    select.add(opt);
+    capacity.replaceWith(select);
+  } else {
+    for (var i = num; i >= 1; i--) {
+      opt = new Option();
+      opt.value = i;
+      opt.text = 'для ' + i + ' гостей';
+      select.add(opt);
+      capacity.replaceWith(select);
+    }
+  }
+};
+
+roomNumber.addEventListener('change', function (evt) {
+  roomsCapacitySynchronizer(evt);
 });
