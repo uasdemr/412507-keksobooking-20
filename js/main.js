@@ -339,8 +339,10 @@ timeout.addEventListener('change', function (evt) {
  * Поле «Количество комнат» синхронизировано с полем «Количество мест»
  */
 
-// всё делал на основе атрибутов value из разметки.
-
+/**
+ *
+ * @param {Event object} objEvt
+ */
 var roomNumber = document.querySelector('#room_number');
 var roomsCapacitySynchronizer = function (objEvt) {
   var capacity = document.querySelector('#capacity');
