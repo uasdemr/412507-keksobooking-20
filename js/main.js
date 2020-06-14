@@ -1,5 +1,6 @@
 'use strict';
 
+
 // var Apartments = {
 //   'palace': 'Дворец',
 //   'flat': 'Квартира',
@@ -16,6 +17,7 @@
 //   'elevator': 'Лифт',
 //   'conditioner': 'Кондиционер'
 // };
+
 
 // Функция генерации 8-ми объектов упакованных в массив
 function objGererator() {
@@ -39,6 +41,7 @@ function objGererator() {
   var mapWidth = document.querySelector('.map').clientWidth;
 
   // map.classList.remove('map--faded');
+
 
   for (var i = 1; i < 9; i++) {
     arr.push(
