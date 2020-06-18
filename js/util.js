@@ -16,13 +16,13 @@ window.util = (function () {
   var allFormsElemsArr = [];
   allFormsElemsArr = adFormFieldsets.concat(mapFiltersFormFieldsets);
 
-  var mapPinMainMousedownHandler = function (evt) {
+  var mapPinMainClickHandler = function (evt) {
     if (evt.button === 0) {
       window.form.formEnable(allFormsElemsArr);
     }
   };
 
-  var mapPinMainKeydownHandler = function (evt) {
+  var mapPinMainKeyDownHandler = function (evt) {
     if (evt.code === 'Enter') {
       window.form.formEnable(allFormsElemsArr);
     }
@@ -40,7 +40,7 @@ window.util = (function () {
     window.formValidation.priceVerify(evt);
   };
 
-  var typeMousedownHandler = function () {
+  var typeMouseDownHandler = function () {
     window.formValidation.typeCorrelator(type);
   };
 
@@ -57,7 +57,7 @@ window.util = (function () {
   };
 
   var mapPinsClickHandler = function (evt) {
-    var button = (evt.target.nodeName === 'IMG') ? evt.target.parentNode : button = evt.target;
+    var button = (evt.target.nodeName === 'IMG') ? evt.target.parentNode : evt.target;
     if (button.tagName === 'BUTTON' && !button.classList.contains('map__pin--main')) {
       var cardX = parseInt(button.style.left, 10) - 25;
       var cardY = parseInt(button.style.top, 10) + 70;
@@ -76,9 +76,9 @@ window.util = (function () {
   };
 
 
-  mapPinMain.addEventListener('mousedown', mapPinMainMousedownHandler);
+  mapPinMain.addEventListener('click', mapPinMainClickHandler, {once: true});
 
-  mapPinMain.addEventListener('keydown', mapPinMainKeydownHandler);
+  mapPinMain.addEventListener('keydown', mapPinMainKeyDownHandler);
 
   window.addEventListener('load', windowOnloadHandler);
 
@@ -86,7 +86,7 @@ window.util = (function () {
 
   price.addEventListener('input', priceInputHandler);
 
-  type.addEventListener('mousedown', typeMousedownHandler);
+  type.addEventListener('mousedown', typeMouseDownHandler);
 
   timein.addEventListener('change', timeinChangeHandler);
 

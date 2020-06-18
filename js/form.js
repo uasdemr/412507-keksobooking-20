@@ -16,15 +16,15 @@ window.form = (function () {
   };
 
   return {
-    formDisable: function (element) {
-      element.forEach(function (item) {
+    formDisable: function (elements) {
+      elements.forEach(function (item) {
         item.setAttribute('disabled', 'false');
       });
     },
-    formEnable: function (element) {
+    formEnable: function (elements) {
       map.classList.remove('map--faded');
       adForm.classList.remove('ad-form--disabled');
-      element.forEach(function (item) {
+      elements.forEach(function (item) {
         item.removeAttribute('disabled');
       });
       inputTypeFileAcceptSetter();
