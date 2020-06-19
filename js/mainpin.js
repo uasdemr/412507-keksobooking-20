@@ -48,8 +48,6 @@ window.mainPin = (function () {
     }
   };
 
-
-
   var mapPinMainMouseUpHandler = function () {
     isDrag = false;
     window.form.setAddress(mapPinMain);
@@ -64,7 +62,5 @@ window.mainPin = (function () {
   }
 
   mapPinMain.addEventListener('mousedown', mapPinMainMouseDownHandler);
-
-
 
 })();
