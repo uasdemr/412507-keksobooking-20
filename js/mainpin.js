@@ -1,26 +1,25 @@
 'use strict';
 
 window.mainPin = (function () {
+  var HALF_MAP_PIN_MAIN_WIDTH = 32;
+  var HALF_MAP_MAIN_HEIGHT = 32;
+  var MAP_PIN_MAIN_HEIGHT = 65;
+  var TOP_LIMIT = 130;
+  var BOTTOM_LIMIT = 630;
+
   var mapPinMain = document.querySelector('.map__pin--main');
   var map = document.querySelector('.map');
-  var isDrag = false;
-
-  var limits = {
-    top: 130,
-    right: map.offsetWidth + map.offsetLeft - (mapPinMain.offsetWidth / 2),
-    bottom: 630,
-    left: map.offsetLeft + (mapPinMain.offsetWidth / 2)
-  };
-
-  var shiftY;
-  var shiftX;
+  var mapWidth = parseInt(map.offsetWidth, 10);
+  var startCoords = {};
+  var newLoc = {};
 
   var mapPinMainMouseDownHandler = function (evt) {
     if (evt.button === 0) {
 
-      isDrag = true;
-      shiftY = evt.clientY - mapPinMain.getBoundingClientRect().top;
-      shiftX = evt.clientX - mapPinMain.getBoundingClientRect().left;
+      startCoords = {
+        x: evt.clientX,
+        y: evt.clientY
+      };
 
       mapPinMain.addEventListener('mousemove', mapPinMainMouseMoveHandler);
       mapPinMain.addEventListener('mouseup', mapPinMainMouseUpHandler);
@@ -28,39 +27,36 @@ window.mainPin = (function () {
   };
 
   var mapPinMainMouseMoveHandler = function (evt) {
-    if (isDrag) {
-      var newLocation = {
-        x: limits.left,
-        y: limits.top
-      };
 
-      if (evt.pageX > limits.right) {
-        newLocation.x = limits.right;
-      } else if (evt.pageX > limits.left) {
-        newLocation.x = evt.pageX;
-      }
-      if (evt.pageY > limits.bottom) {
-        newLocation.y = limits.bottom;
-      } else if (evt.pageY > limits.top) {
-        newLocation.y = evt.pageY;
-      }
-      relocate(newLocation);
+    var shift = {
+      x: startCoords.x - evt.clientX,
+      y: startCoords.y - evt.clientY
+    };
+
+    startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+
+    newLoc.x = mapPinMain.offsetLeft - shift.x;
+    newLoc.y = mapPinMain.offsetTop - shift.y;
+
+    if (newLoc.x >= -HALF_MAP_PIN_MAIN_WIDTH && newLoc.x <= mapWidth - HALF_MAP_PIN_MAIN_WIDTH) {
+      mapPinMain.style.left = (newLoc.x) + 'px';
     }
+
+    if (newLoc.y >= TOP_LIMIT - HALF_MAP_MAIN_HEIGHT && newLoc.y + MAP_PIN_MAIN_HEIGHT <= BOTTOM_LIMIT + MAP_PIN_MAIN_HEIGHT) {
+      mapPinMain.style.top = (newLoc.y) + 'px';
+    }
+
   };
 
   var mapPinMainMouseUpHandler = function () {
-    isDrag = false;
     window.form.setAddress(mapPinMain);
     mapPinMain.removeEventListener('mousemove', mapPinMainMouseMoveHandler);
     mapPinMain.removeEventListener('mouseup', mapPinMainMouseUpHandler);
   };
 
-  //* размещение mapPinMain
-  function relocate(newLocation) {
-    mapPinMain.style.left = newLocation.x - shiftX + 'px';
-    mapPinMain.style.top = newLocation.y - shiftY + 'px';
-  }
-
   mapPinMain.addEventListener('mousedown', mapPinMainMouseDownHandler);
-
 })();
