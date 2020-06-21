@@ -1,0 +1,62 @@
+'use strict';
+
+window.mainPin = (function () {
+  var HALF_MAP_PIN_MAIN_WIDTH = 32;
+  var HALF_MAP_MAIN_HEIGHT = 32;
+  var MAP_PIN_MAIN_HEIGHT = 65;
+  var TOP_LIMIT = 130;
+  var BOTTOM_LIMIT = 630;
+
+  var mapPinMain = document.querySelector('.map__pin--main');
+  var map = document.querySelector('.map');
+  var mapWidth = parseInt(map.offsetWidth, 10);
+  var startCoords = {};
+  var newLoc = {};
+
+  var mapPinMainMouseDownHandler = function (evt) {
+    if (evt.button === 0) {
+
+      startCoords = {
+        x: evt.clientX,
+        y: evt.clientY
+      };
+
+      mapPinMain.addEventListener('mousemove', mapPinMainMouseMoveHandler);
+      mapPinMain.addEventListener('mouseup', mapPinMainMouseUpHandler);
+    }
+  };
+
+  var mapPinMainMouseMoveHandler = function (evt) {
+
+    var shift = {
+      x: startCoords.x - evt.clientX,
+      y: startCoords.y - evt.clientY
+    };
+
+    startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+
+    newLoc.x = mapPinMain.offsetLeft - shift.x;
+    newLoc.y = mapPinMain.offsetTop - shift.y;
+
+    if (newLoc.x >= -HALF_MAP_PIN_MAIN_WIDTH && newLoc.x <= mapWidth - HALF_MAP_PIN_MAIN_WIDTH) {
+      mapPinMain.style.left = (newLoc.x) + 'px';
+    }
+
+    if (newLoc.y >= TOP_LIMIT - HALF_MAP_MAIN_HEIGHT && newLoc.y + MAP_PIN_MAIN_HEIGHT <= BOTTOM_LIMIT + MAP_PIN_MAIN_HEIGHT) {
+      mapPinMain.style.top = (newLoc.y) + 'px';
+    }
+
+  };
+
+  var mapPinMainMouseUpHandler = function () {
+    window.form.setAddress(mapPinMain);
+    mapPinMain.removeEventListener('mousemove', mapPinMainMouseMoveHandler);
+    mapPinMain.removeEventListener('mouseup', mapPinMainMouseUpHandler);
+  };
+
+  mapPinMain.addEventListener('mousedown', mapPinMainMouseDownHandler);
+})();
