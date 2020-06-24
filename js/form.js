@@ -1,11 +1,73 @@
 'use strict';
 
 window.form = (function () {
-  var adForm = document.querySelector('.ad-form');
+  // var adForm = document.querySelector('.ad-form');
+  var data;
+  var title = document.getElementById('title');
+  var price = document.getElementById('price');
+  var type = document.getElementById('type');
+  var timein = document.querySelector('#timein');
+  var timeout = document.querySelector('#timeout');
+  var roomNumber = document.querySelector('#room_number');
+  var mapPins = document.querySelector('.map__pins');
+
+  var titleInputHandler = function (evt) {
+    window.formValidation.titleVerify(evt);
+  };
+
+  var priceInputHandler = function (evt) {
+    window.formValidation.priceVerify(evt);
+  };
+
+  var typeMouseDownHandler = function () {
+    window.formValidation.typeCorrelator(type);
+  };
+
+  var timeinChangeHandler = function (evt) {
+    window.formValidation.adFormElementTimeSynchronizer(evt);
+  };
+
+  var timeoutChangeHandler = function (evt) {
+    window.formValidation.adFormElementTimeSynchronizer(evt);
+  };
+
+  var roomNumberChangeListener = function (evt) {
+    window.formValidation.roomsCapacitySynchronizer(evt);
+  };
+
+  var activeButtonsArr = [];
+  var buttonActivator = function (btn) {
+    btn.classList.add('map__pin--active');
+    if (activeButtonsArr.length >= 1) {
+      var lastButton = activeButtonsArr.shift();
+      lastButton.classList.remove('map__pin--active');
+    }
+    activeButtonsArr.push(btn);
+    console.log(activeButtonsArr);
+  };
+
+  var mapPinsClickHandler = function (evt) {
+    var button = (evt.target.nodeName === 'IMG') ? evt.target.parentNode : evt.target;
+    if (button.tagName === 'BUTTON' && !button.classList.contains('map__pin--main')) {
+      buttonActivator(button);
+      var cardX = parseInt(button.style.left, 10) - 25;
+      var cardY = parseInt(button.style.top, 10) + 70;
+      var it = window.form.data.find(function (item) {
+        return item.location.x === cardX && item.location.y === cardY;
+      });
+      window.form.domCardRemover();
+      window.map.domCardRender(it);
+    }
+  };
+
+  var mapPinsKeydownHandler = function (evt) {
+    if (evt.code === 'Escape') {
+      window.form.domCardRemover(evt);
+    }
+  };
+
   var formAddress = document.getElementById('address');
   var map = document.querySelector('.map');
-
-  var data = window.data.objGererator();
 
   var inputTypeFileAcceptSetter = function () {
     var inputTypeFile = document.querySelectorAll('input[type="file"]');
@@ -22,13 +84,18 @@ window.form = (function () {
       });
     },
     formEnable: function (elements) {
-      map.classList.remove('map--faded');
-      adForm.classList.remove('ad-form--disabled');
       elements.forEach(function (item) {
         item.removeAttribute('disabled');
       });
       inputTypeFileAcceptSetter();
-      window.map.domRender(data);
+      title.addEventListener('input', titleInputHandler);
+      price.addEventListener('input', priceInputHandler);
+      type.addEventListener('mousedown', typeMouseDownHandler);
+      timein.addEventListener('change', timeinChangeHandler);
+      timeout.addEventListener('change', timeoutChangeHandler);
+      roomNumber.addEventListener('change', roomNumberChangeListener);
+      mapPins.addEventListener('click', mapPinsClickHandler);
+      mapPins.addEventListener('keydown', mapPinsKeydownHandler);
     },
     /**
      * Устанавливает координаты mainPin в поле Адрес формы
@@ -56,8 +123,6 @@ window.form = (function () {
         openedCard.remove();
       }
     },
-
     data: data,
-
   };
 })();
