@@ -11,7 +11,7 @@
   allFormsElemsArr = adFormFieldsets.concat(mapFiltersFormFieldsets);
 
   var onError = function (message) {
-    console.error(message);
+    throw new Error(message);
   };
 
   var mapPinMainClickHandler = function (evt) {

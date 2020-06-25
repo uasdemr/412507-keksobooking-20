@@ -35,15 +35,14 @@ window.form = (function () {
     window.formValidation.roomsCapacitySynchronizer(evt);
   };
 
-  var activeButtonsArr = [];
   var buttonActivator = function (btn) {
-    btn.classList.add('map__pin--active');
-    if (activeButtonsArr.length >= 1) {
-      var lastButton = activeButtonsArr.shift();
-      lastButton.classList.remove('map__pin--active');
+    var button = document.querySelector('.map__pin--active');
+    if (button) {
+      button.classList.remove('map__pin--active');
     }
-    activeButtonsArr.push(btn);
-    console.log(activeButtonsArr);
+    if (!btn.classList.contains('map__pin--active')) {
+      btn.classList.add('map__pin--active');
+    }
   };
 
   var mapPinsClickHandler = function (evt) {

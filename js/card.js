@@ -47,13 +47,15 @@ window.card = (function () {
       cardTextTime.textContent = 'Заезд после ' + dataSet.offer.checkin + ', выезд до ' + dataSet.offer.checkout;
 
       var myString = '';
-      var featureKeys = Object.keys(Features);
-      for (var n = 0; n < featureKeys.length; n++) {
-        if (!(featureKeys[n] === featureKeys[featureKeys.length - 1])) {
-          myString += Features[featureKeys[n]] + ', ';
-        } else {
-          myString += Features[featureKeys[n]] + '.';
-        }
+      var features = dataSet.offer.features;
+      if (features.length > 1) {
+        features.forEach(function (item, key) {
+          if (item in Features && key < features.length - 1) {
+            myString += Features[item] + ', ';
+          } else {
+            myString += Features[item] + '.';
+          }
+        });
       }
       cardFeatures.textContent = myString;
       cardDescription.textContent = dataSet.offer.description;
@@ -74,7 +76,13 @@ window.card = (function () {
         }
       }
 
-      card.append(cardTitle, cardAddress, cardPrice, cardPopupType, cardCapacity, cardTextTime, cardFeatures, cardDescription, cardPhotos, cardAvatar);
+      card.append(cardTitle, cardAddress, cardPrice, cardPopupType, cardCapacity, cardTextTime);
+
+      if (cardFeatures.textContent) {
+        card.append(cardFeatures);
+      }
+      card.append(cardDescription, cardPhotos, cardAvatar);
+
       return card;
     },
   };
