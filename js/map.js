@@ -11,9 +11,12 @@ window.map = (function () {
      * @param {array} data
      */
     domRender: function (data) {
+      window.form.data = data;
       var pinsFragment = document.createDocumentFragment();
       for (var i = 0; i < data.length; i++) {
-        pinsFragment.appendChild(window.pin.domPinElementMaker(data[i]));
+        if (data[i].hasOwnProperty('offer')) {
+          pinsFragment.appendChild(window.pin.domPinElementMaker(data[i]));
+        }
       }
       mapPins.appendChild(pinsFragment);
     },
