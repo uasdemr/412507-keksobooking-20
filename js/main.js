@@ -35,6 +35,7 @@
 
   var windowOnloadHandler = function () {
     window.form.setAddress(mapPinMain);
+    window.form.formDisable(allFormsElemsArr);
   };
 
 

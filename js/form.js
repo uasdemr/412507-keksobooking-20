@@ -1,7 +1,7 @@
 'use strict';
 
 window.form = (function () {
-  // var adForm = document.querySelector('.ad-form');
+  var adForm = document.querySelector('.ad-form');
   var data;
   var title = document.getElementById('title');
   var price = document.getElementById('price');
@@ -10,6 +10,13 @@ window.form = (function () {
   var timeout = document.querySelector('#timeout');
   var roomNumber = document.querySelector('#room_number');
   var mapPins = document.querySelector('.map__pins');
+
+  var mapFiltersForm = document.querySelector('.map__filters');
+  var adFormFieldsets = Array.prototype.slice.call(adForm.children);
+  var mapFiltersFormFieldsets = Array.prototype.slice.call(mapFiltersForm.children);
+  var allFormsElemsArr = [];
+  allFormsElemsArr = adFormFieldsets.concat(mapFiltersFormFieldsets);
+
 
   var titleInputHandler = function (evt) {
     window.formValidation.titleVerify(evt);
@@ -68,6 +75,19 @@ window.form = (function () {
   var formAddress = document.getElementById('address');
   var map = document.querySelector('.map');
 
+  var formSubmit = function (evt) {
+    evt.preventDefault();
+
+    formAddress.value = formAddress.placeholder;
+    formAddress.removeAttribute('disabled');
+    var form = new FormData(adForm);
+    window.upload(form, function (responce) {
+      adForm.reset();
+      window.form.formDisable(allFormsElemsArr);
+    });
+  };
+
+
   var inputTypeFileAcceptSetter = function () {
     var inputTypeFile = document.querySelectorAll('input[type="file"]');
 
@@ -95,6 +115,7 @@ window.form = (function () {
       roomNumber.addEventListener('change', roomNumberChangeListener);
       mapPins.addEventListener('click', mapPinsClickHandler);
       mapPins.addEventListener('keydown', mapPinsKeydownHandler);
+      adForm.addEventListener('submit', formSubmit);
     },
     /**
      * Устанавливает координаты mainPin в поле Адрес формы
