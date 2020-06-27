@@ -59,4 +59,23 @@ window.mainPin = (function () {
   };
 
   mapPinMain.addEventListener('mousedown', mapPinMainMouseDownHandler);
+
+  var mapPinMainClickHandler = function (evt) {
+    if (evt.button === 0) {
+      window.map.mapActivator(evt);
+    }
+  };
+
+  var mapPinMainKeyDownHandler = function (evt) {
+    if (evt.code === 'Enter') {
+      window.map.mapActivator(evt);
+    }
+  };
+
+  return {
+    mapPinMainAddHandlers: function (evt) {
+      mapPinMainClickHandler(evt);
+      mapPinMainKeyDownHandler(evt);
+    },
+  };
 })();

@@ -6,8 +6,16 @@
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
+    var onError = function (message) {
+      throw new Error(message);
+    };
+
     xhr.addEventListener('load', function () {
-      onSuccess(xhr.response);
+      if (xhr.status === 200) {
+        onSuccess(xhr.response);
+      } else {
+        onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
+      }
     });
 
     xhr.open('POST', url);

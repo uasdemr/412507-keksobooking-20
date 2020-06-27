@@ -6,7 +6,7 @@ window.formValidation = (function () {
   var timeout = document.querySelector('#timeout');
 
   var formTitleTest = function (titleValue) {
-    return /^[a-zA-ZА-Яа-я]{30,100}$/.test(titleValue);
+    return /^[a-zA-ZА-Яа-я, ]{30,100}$/.test(titleValue);
   };
 
   return {
@@ -21,7 +21,7 @@ window.formValidation = (function () {
         evt.target.setCustomValidity('');
         evt.target.style.border = '';
       } else {
-        msg = 'Количество символов заголовка должно быть в диапозоне от 30 до 100 символов. Вы набрали ' + evt.target.value.length;
+        msg = 'Количество символов заголовка должно быть в диапозоне от 30 до 100 символов и состоять только из букв русского или латинского алфавита. Вы набрали ' + evt.target.value.length;
         evt.target.setCustomValidity(msg);
         evt.target.style.border = '2px solid red';
       }

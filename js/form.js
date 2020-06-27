@@ -2,6 +2,7 @@
 
 window.form = (function () {
   var adForm = document.querySelector('.ad-form');
+  var mapPinMain = document.querySelector('.map__pin--main');
   var data;
   var title = document.getElementById('title');
   var price = document.getElementById('price');
@@ -10,13 +11,13 @@ window.form = (function () {
   var timeout = document.querySelector('#timeout');
   var roomNumber = document.querySelector('#room_number');
   var mapPins = document.querySelector('.map__pins');
-
+  var formAddress = document.getElementById('address');
+  var map = document.querySelector('.map');
   var mapFiltersForm = document.querySelector('.map__filters');
   var adFormFieldsets = Array.prototype.slice.call(adForm.children);
   var mapFiltersFormFieldsets = Array.prototype.slice.call(mapFiltersForm.children);
   var allFormsElemsArr = [];
   allFormsElemsArr = adFormFieldsets.concat(mapFiltersFormFieldsets);
-
 
   var titleInputHandler = function (evt) {
     window.formValidation.titleVerify(evt);
@@ -72,21 +73,65 @@ window.form = (function () {
     }
   };
 
-  var formAddress = document.getElementById('address');
-  var map = document.querySelector('.map');
+  var formDeactivator = function () {
+    adForm.classList.add('ad-form--disabled');
+  };
+
+  // var formValidityChecker = function () {
+
+  // };
+  var successTemplate = document.querySelector('#success').content;
+  var successMsg = successTemplate.querySelector('.success');
+
+  var onSuccessMsg = function () {
+    var main = document.querySelector('main');
+    main.append(successMsg);
+    document.body.addEventListener('keydown', successMsgKeyDownRemoveHandler);
+    document.body.addEventListener('click', bodyClickOnSuccessMsgRemoveHandler);
+    mapPinMain.focus();
+  };
+
+  var bodyRemoveListener = function () {
+    document.body.removeEventListener('keydown', successMsgKeyDownRemoveHandler);
+    document.body.removeEventListener('click', bodyClickOnSuccessMsgRemoveHandler);
+  };
+
+  var bodyClickOnSuccessMsgRemoveHandler = function () {
+    var success = document.querySelector('.success');
+    if (success) {
+      // Дописать удаление обработчика
+      success.remove();
+      bodyRemoveListener();
+    }
+  };
+
+  var successMsgKeyDownRemoveHandler = function (evt) {
+    var success = document.querySelector('.success');
+    if (evt.code === 'Escape') {
+      if (success) {
+        // Дописать удаление обработчика
+        success.remove();
+        bodyRemoveListener();
+      }
+    }
+  };
 
   var formSubmit = function (evt) {
     evt.preventDefault();
-
     formAddress.value = formAddress.placeholder;
     formAddress.removeAttribute('disabled');
     var form = new FormData(adForm);
-    window.upload(form, function (responce) {
+    window.upload(form, function () {
       adForm.reset();
       window.form.formDisable(allFormsElemsArr);
+      window.map.pinsRemover();
+      window.map.mapDeactivator();
+      formDeactivator();
+      mapPinMain.addEventListener('click', window.mainPin.mapPinMainAddHandlers, {once: true});
+      mapPinMain.addEventListener('keydown', window.mainPin.mapPinMainAddHandlers, {once: true});
+      onSuccessMsg();
     });
   };
-
 
   var inputTypeFileAcceptSetter = function () {
     var inputTypeFile = document.querySelectorAll('input[type="file"]');
