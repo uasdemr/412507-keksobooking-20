@@ -132,6 +132,7 @@ window.form = (function () {
         window.map.pinsRemover();
         window.map.mapDeactivator();
         formDeactivator();
+        window.mainPin.mapPinMainSetCenter();
         mapPinMain.addEventListener('click', window.mainPin.mapPinMainAddHandlers, {once: true});
         mapPinMain.addEventListener('keydown', window.mainPin.mapPinMainAddHandlers, {once: true});
         onSuccessMsg();
@@ -139,9 +140,17 @@ window.form = (function () {
     }
   };
 
-  // var formResetHandler = function () {
-
-  // };
+  var formResetHandler = function () {
+    adForm.reset();
+    window.form.formDisable(allFormsElemsArr);
+    window.map.pinsRemover();
+    window.map.mapDeactivator();
+    window.form.domCardRemover();
+    formDeactivator();
+    window.main.windowOnloadHandler();
+    window.mainPin.mapPinMainSetCenter();
+    mapPinMain.focus();
+  };
 
   var inputTypeFileAcceptSetter = function () {
     var inputTypeFile = document.querySelectorAll('input[type="file"]');
@@ -171,6 +180,7 @@ window.form = (function () {
       mapPins.addEventListener('click', mapPinsClickHandler);
       mapPins.addEventListener('keydown', mapPinsKeydownHandler);
       adForm.addEventListener('submit', formSubmit);
+      adForm.addEventListener('reset', formResetHandler);
     },
     /**
      * Устанавливает координаты mainPin в поле Адрес формы

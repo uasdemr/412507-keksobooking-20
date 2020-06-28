@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.main = (function () {
   var adForm = document.querySelector('.ad-form');
   var mapPinMain = document.querySelector('.map__pin--main');
   var adFormFieldsets = Array.prototype.slice.call(adForm.children);
@@ -18,4 +18,8 @@
   };
 
   window.addEventListener('load', windowOnloadHandler);
+
+  return {
+    windowOnloadHandler: windowOnloadHandler,
+  };
 })();

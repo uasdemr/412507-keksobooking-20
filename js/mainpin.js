@@ -10,6 +10,7 @@ window.mainPin = (function () {
   var mapPinMain = document.querySelector('.map__pin--main');
   var map = document.querySelector('.map');
   var mapWidth = parseInt(map.offsetWidth, 10);
+  var mapPins = document.querySelector('.map__pins');
   var startCoords = {};
   var newLoc = {};
 
@@ -76,6 +77,13 @@ window.mainPin = (function () {
     mapPinMainAddHandlers: function (evt) {
       mapPinMainClickHandler(evt);
       mapPinMainKeyDownHandler(evt);
+    },
+
+    mapPinMainSetCenter: function () {
+      var top = (parseInt(mapPins.offsetHeight, 10) / 2) + 23;
+      var left = (parseInt(mapPins.offsetWidth, 10) / 2) - 30;
+      mapPinMain.style.top = top + 'px';
+      mapPinMain.style.left = left + 'px';
     },
   };
 })();

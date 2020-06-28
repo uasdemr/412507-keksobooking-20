@@ -1,6 +1,7 @@
 'use strict';
 
 window.formValidation = (function () {
+  var price = document.querySelector('#price');
   var timein = document.querySelector('#timein');
   var timeout = document.querySelector('#timeout');
 

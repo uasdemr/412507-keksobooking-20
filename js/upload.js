@@ -59,7 +59,7 @@
         onSuccess(xhr.response);
       } else if (xhr.status === 400) {
         onErrorMsg();
-        // onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
 
