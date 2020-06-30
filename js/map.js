@@ -16,6 +16,10 @@ window.map = (function () {
     throw new Error(message);
   };
 
+  var cardCloseButtonClickHandler = function () {
+    window.form.domCardRemover();
+  };
+
   return {
     /**
      * Заполняет DOM pin`ами из массива объектов data
@@ -43,6 +47,8 @@ window.map = (function () {
       var cardsFragment = document.createDocumentFragment();
       cardsFragment.append(window.card.domCardElementMaker(dataSet));
       mainMap.insertBefore(cardsFragment, mapFiltersContainer);
+      var popupClose = document.querySelector('.popup__close');
+      popupClose.addEventListener('click', cardCloseButtonClickHandler);
     },
 
     mapActivator: function () {

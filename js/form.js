@@ -69,6 +69,12 @@ window.form = (function () {
     }
   };
 
+  // var popupClose = document.querySelector('.popup__close');
+  // var cardCloseButtonClickHandler = function () {
+  //   window.form.domCardRemover();
+  // };
+  // popupClose.addEventListener('click', cardCloseButtonClickHandler);
+
   var mapPinsKeydownHandler = function (evt) {
     if (evt.code === 'Escape') {
       window.form.domCardRemover(evt);
