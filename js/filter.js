@@ -11,7 +11,7 @@ window.filter = (function () {
     });
     window.map.pinsRemover();
     window.map.domRender(typeFilteredData);
-    console.log(typeFilteredData);
+    window.form.domCardRemover();
   };
 
   housingType.addEventListener('change', getHousingTypeData);

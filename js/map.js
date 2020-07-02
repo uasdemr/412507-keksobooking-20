@@ -11,6 +11,7 @@ window.map = (function () {
   var mapFiltersFormFieldsets = Array.prototype.slice.call(mapFiltersForm.children);
   var allFormsElemsArr = [];
   allFormsElemsArr = adFormFieldsets.concat(mapFiltersFormFieldsets);
+  var LENGTH_LIMITER = 5;
 
   var onError = function (message) {
     throw new Error(message);
@@ -27,7 +28,10 @@ window.map = (function () {
      */
     domRender: function (data) {
       var pinsFragment = document.createDocumentFragment();
-      for (var i = 0; i < data.length; i++) {
+      for (var i = 0; i < LENGTH_LIMITER; i++) {
+        if (!data[i]) {
+          break;
+        }
         if (data[i].hasOwnProperty('offer')) {
           pinsFragment.appendChild(window.pin.domPinElementMaker(data[i]));
         }

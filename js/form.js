@@ -4,7 +4,6 @@ window.form = (function () {
   var adForm = document.querySelector('.ad-form');
   var mapPinMain = document.querySelector('.map__pin--main');
   var data;
-  var dataFiltered;
   var title = document.querySelector('#title');
   var price = document.querySelector('#price');
   var type = document.querySelector('#type');
@@ -69,12 +68,6 @@ window.form = (function () {
       window.map.domCardRender(it);
     }
   };
-
-  // var popupClose = document.querySelector('.popup__close');
-  // var cardCloseButtonClickHandler = function () {
-  //   window.form.domCardRemover();
-  // };
-  // popupClose.addEventListener('click', cardCloseButtonClickHandler);
 
   var mapPinsKeydownHandler = function (evt) {
     if (evt.code === 'Escape') {
@@ -216,6 +209,5 @@ window.form = (function () {
       }
     },
     data: data,
-    dataFiltered: dataFiltered,
   };
 })();

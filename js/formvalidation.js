@@ -23,7 +23,6 @@ window.formValidation = (function () {
       } else {
         msg = 'Количество символов заголовка должно быть в диапозоне от 30 до 100 символов и состоять только из букв русского или латинского алфавита. Вы набрали ' + elem.value.length;
         elem.setCustomValidity(msg);
-        elem.style.border = '2px solid red';
       }
     },
 
@@ -40,11 +39,9 @@ window.formValidation = (function () {
       } else if (!Number(parseInt(elem.value, 10))) {
         msg = 'Цена исчисляется в цифровом эквиваленте.';
         elem.setCustomValidity(msg);
-        elem.style.border = '2px solid red';
       } else {
         msg = 'Максимальное число в поле Цена за ночь может быть равным 1000000. Вы ввели: ' + elem.value;
         elem.setCustomValidity(msg);
-        elem.style.border = '2px solid red';
       }
     },
     /**
