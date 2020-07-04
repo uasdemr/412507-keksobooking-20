@@ -6,7 +6,7 @@ window.formValidation = (function () {
   var timeout = document.querySelector('#timeout');
 
   var formTitleTest = function (titleValue) {
-    return /^[a-zA-ZА-Яа-я,? ]{30,100}$/.test(titleValue);
+    return /^[\D,\-\s]{30,60}$/.test(titleValue);
   };
 
   return {
@@ -19,7 +19,6 @@ window.formValidation = (function () {
       var msg = '';
       if (formTitleTest(elem.value)) {
         elem.setCustomValidity('');
-        elem.style.border = '';
       } else {
         msg = 'Количество символов заголовка должно быть в диапозоне от 30 до 100 символов и состоять только из букв русского или латинского алфавита. Вы набрали ' + elem.value.length;
         elem.setCustomValidity(msg);
@@ -35,7 +34,6 @@ window.formValidation = (function () {
       var msg = '';
       if (parseInt(elem.value, 10) <= 1000000 && parseInt(elem.value, 10) >= 0) {
         elem.setCustomValidity('');
-        elem.style.border = '';
       } else if (!Number(parseInt(elem.value, 10))) {
         msg = 'Цена исчисляется в цифровом эквиваленте.';
         elem.setCustomValidity(msg);
