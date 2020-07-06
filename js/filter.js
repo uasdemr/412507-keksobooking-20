@@ -47,6 +47,24 @@ window.filter = (function () {
   };
   var filterConditionerHandler = function (evt) {
     filterObject.conditioner = evt.target.checked;
+    console.log(filterObject);
+  };
+
+  /**
+   * Принимает на вход строку содержащую числа
+   * и возвращает массив целых чисел
+   * @param {String} str
+   * @return {Array}
+   */
+  var getNumber = function (str) {
+    var strArr = str.split(' ');
+    var myFilteredArr = strArr.filter(function (item) {
+      return parseInt(item, 10);
+    });
+    myFilteredArr = myFilteredArr.map(function (item) {
+      return parseInt(item, 10);
+    });
+    return myFilteredArr;
   };
 
   // Допписать filteredDataRender с учетом всех особенностей obj
@@ -56,6 +74,11 @@ window.filter = (function () {
     if (obj.type) {
       filteredData = fullData.filter(function (item) {
         return item.offer.type === obj.type;
+      });
+    }
+    if (obj.price) {
+      filteredData = fullData.filter(function (item) {
+        return item.offer.price === obj.price;
       });
     }
     window.form.domCardRemover();
