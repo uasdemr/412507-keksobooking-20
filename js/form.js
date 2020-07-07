@@ -128,6 +128,8 @@ window.form = (function () {
       var form = new FormData(adForm);
       window.upload(form, function () {
         adForm.reset();
+        mapFiltersForm.reset();
+        window.filter.defaultFilterObjectSetter();
         window.form.formDisable(allFormsElemsArr);
         window.map.pinsRemover();
         window.map.mapDeactivator();
@@ -142,6 +144,8 @@ window.form = (function () {
 
   var formResetHandler = function () {
     adForm.reset();
+    mapFiltersForm.reset();
+    window.filter.defaultFilterObjectSetter();
     window.form.formDisable(allFormsElemsArr);
     window.map.pinsRemover();
     window.map.mapDeactivator();

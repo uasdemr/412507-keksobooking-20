@@ -10,7 +10,8 @@ window.load = (function () {
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         window.form.data = xhr.response;
-        onSuccess(xhr.response);
+        window.filter.defaultFilterObjectSetter();
+        onSuccess(window.filter.filterObject);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
