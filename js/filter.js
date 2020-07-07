@@ -11,8 +11,9 @@ window.filter = (function () {
   var filterWasher = document.querySelector('#filter-washer');
   var filterElevator = document.querySelector('#filter-elevator');
   var filterConditioner = document.querySelector('#filter-conditioner');
+  var fullData = [];
+  var filteredData;
 
-  var fullData;
   var filterObject = {
     conditioner: false,
     dishwasher: false,
@@ -26,6 +27,9 @@ window.filter = (function () {
     wifi: false,
   };
 
+  /**
+   * Возвращает объект-фильтр к состоянию по умолчанию
+   */
   var defaultFilterObjectSetter = function () {
     filterObject = {
       conditioner: false,
@@ -102,15 +106,10 @@ window.filter = (function () {
   };
 
   /**
-   * Принимает объект фильтрации и вызывает функцию отрисовски пинов,
-   * которые соответствуют объекту фильтрации, настроенному по умолчанию
-   * первичной загрузки. Если фильтр возвращается в первоначальное состояние
-   * отрисовываются исходные данные.
+   * Функция фильтрации по типу жилья
    * @param {Object} obj
-   */
-  var filteredDataRender = function (obj) {
-    fullData = window.form.data.slice();
-    var filteredData;
+  */
+  var typeFilter = function (obj) {
     if (obj.type) {
       filteredData = fullData.filter(function (item) {
         return item.offer.type === obj.type;
@@ -122,7 +121,13 @@ window.filter = (function () {
         });
       }
     }
+  };
 
+  /**
+   * Функция фильтрации по стоимости
+   * @param {Object} obj
+   */
+  var priceFilter = function (obj) {
     if (obj.price) {
       var price = getNumber(obj.price);
       if (price.length > 1) {
@@ -147,6 +152,13 @@ window.filter = (function () {
         }
       }
     }
+  };
+
+  /**
+   * Функция фильтрации по колличеству комнат
+   * @param {Object} obj
+   */
+  var roomsFilter = function (obj) {
     if (obj.rooms) {
       var rooms = getNumber(obj.rooms);
       if (rooms.length > 0) {
@@ -160,6 +172,13 @@ window.filter = (function () {
         });
       }
     }
+  };
+
+  /**
+   * Функция фильтрации по колличеству гостей
+   * @param {Object} obj
+   */
+  var guestsFilter = function (obj) {
     if (obj.guest) {
       var guest = getNumber(obj.guest);
       if (guest.length > 0) {
@@ -177,53 +196,127 @@ window.filter = (function () {
           return item.offer.guests > 0;
         });
       }
-
-      if (obj.wifi) {
-        filteredData = filteredData.filter(function (item) {
-          return item.offer.features.indexOf(filterWifi.value) !== -1;
-        });
-      }
-      if (obj.dishwasher) {
-        filteredData = filteredData.filter(function (item) {
-          return item.offer.features.indexOf(filterDishwasher.value) !== -1;
-        });
-      }
-      if (obj.parking) {
-        filteredData = filteredData.filter(function (item) {
-          return item.offer.features.indexOf(filterParking.value) !== -1;
-        });
-      }
-      if (obj.washer) {
-        filteredData = filteredData.filter(function (item) {
-          return item.offer.features.indexOf(filterWasher.value) !== -1;
-        });
-      }
-      if (obj.elevator) {
-        filteredData = filteredData.filter(function (item) {
-          return item.offer.features.indexOf(filterElevator.value) !== -1;
-        });
-      }
-      if (obj.conditioner) {
-        filteredData = filteredData.filter(function (item) {
-          return item.offer.features.indexOf(filterConditioner.value) !== -1;
-        });
-      }
-
-      if (
-        filterObject.conditioner === false &&
-        filterObject.dishwasher === false &&
-        filterObject.elevator === false &&
-        filterObject.guest === 'any' &&
-        filterObject.parking === false &&
-        filterObject.price === 'Любая' &&
-        filterObject.rooms === 'any' &&
-        filterObject.type === 'any' &&
-        filterObject.washer === false &&
-        filterObject.wifi === false
-      ) {
-        window.map.domRender(window.form.data);
-      }
     }
+  };
+
+  /**
+   * Функция фильтрации по наличию wi-fi
+   * @param {Object} obj
+   */
+  var wifiFilter = function (obj) {
+    if (obj.wifi) {
+      filteredData = filteredData.filter(function (item) {
+        return item.offer.features.indexOf(filterWifi.value) !== -1;
+      });
+    }
+  };
+
+  /**
+   * Функция фильтрации по наличию посудомоечной машины
+   * @param {Object} obj
+   */
+  var dishwasherFilter = function (obj) {
+    if (obj.dishwasher) {
+      filteredData = filteredData.filter(function (item) {
+        return item.offer.features.indexOf(filterDishwasher.value) !== -1;
+      });
+    }
+  };
+
+  /**
+   * Функция фильтрации по наличию парковки
+   * @param {Object} obj
+   */
+  var parkingFilter = function (obj) {
+    if (obj.parking) {
+      filteredData = filteredData.filter(function (item) {
+        return item.offer.features.indexOf(filterParking.value) !== -1;
+      });
+    }
+  };
+
+  /**
+   * Функция фильтрации по наличию стиральной машины
+   * @param {Object} obj
+   */
+  var washerFilter = function (obj) {
+    if (obj.washer) {
+      filteredData = filteredData.filter(function (item) {
+        return item.offer.features.indexOf(filterWasher.value) !== -1;
+      });
+    }
+  };
+
+  /**
+   * Функция фильтрации по наличию лифта
+   * @param {Object} obj
+   */
+  var elevatorFilter = function (obj) {
+    if (obj.elevator) {
+      filteredData = filteredData.filter(function (item) {
+        return item.offer.features.indexOf(filterElevator.value) !== -1;
+      });
+    }
+  };
+
+  /**
+   * Функция фильтрации по наличию кондиционера
+   * @param {Object} obj
+   */
+  var conditionerFilter = function (obj) {
+    if (obj.conditioner) {
+      filteredData = filteredData.filter(function (item) {
+        return item.offer.features.indexOf(filterConditioner.value) !== -1;
+      });
+    }
+  };
+
+  /**
+   * Функция фильтрации по умолчанию.
+   * Проверяет объект фильтра на соответствие начальным установкам и
+   * если все результаты совпадают с дефолтными значениями, вызывает
+   * window.map.domRender с первоначальными данными
+   * @param {Object} obj
+   */
+  var defaultFilter = function () {
+    if (
+      filterObject.conditioner === false &&
+      filterObject.dishwasher === false &&
+      filterObject.elevator === false &&
+      filterObject.guest === 'any' &&
+      filterObject.parking === false &&
+      filterObject.price === 'Любая' &&
+      filterObject.rooms === 'any' &&
+      filterObject.type === 'any' &&
+      filterObject.washer === false &&
+      filterObject.wifi === false
+    ) {
+      window.map.domRender(window.form.data);
+    }
+  };
+
+  /**
+   * Принимает объект фильтрации и вызывает функции проверки этого объекта.
+   * Если фильтр возвращается в первоначальное состояние- отрисовываются
+   * исходные данные.
+   * @param {Object} obj
+   */
+  var filteredDataRender = function (obj) {
+    fullData = window.form.data.slice();
+
+    typeFilter(obj);
+    priceFilter(obj);
+    roomsFilter(obj);
+    guestsFilter(obj);
+    wifiFilter(obj);
+    dishwasherFilter(obj);
+    parkingFilter(obj);
+    washerFilter(obj);
+    elevatorFilter(obj);
+    conditionerFilter(obj);
+    defaultFilter(obj);
+
+
     window.form.domCardRemover();
     window.map.pinsRemover();
     window.map.domRender(filteredData);
