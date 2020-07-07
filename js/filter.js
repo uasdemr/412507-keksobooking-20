@@ -41,48 +41,48 @@ window.filter = (function () {
     };
   };
 
-  var housingTypeHandler = function (evt) {
+  var housingTypeHandler = window.debounce(function (evt) {
     filterObject.type = evt.target.value;
     filteredDataRender(filterObject);
-  };
+  });
 
-  var housingPriceHandler = function (evt) {
+  var housingPriceHandler = window.debounce(function (evt) {
     filterObject.price = evt.target.options[evt.target.selectedIndex].text;
     filteredDataRender(filterObject);
-  };
+  });
 
-  var housingRoomsHandler = function (evt) {
+  var housingRoomsHandler = window.debounce(function (evt) {
     filterObject.rooms = evt.target.options[evt.target.selectedIndex].value;
     filteredDataRender(filterObject);
-  };
-  var housingGuestHandler = function (evt) {
+  });
+  var housingGuestHandler = window.debounce(function (evt) {
     filterObject.guest = evt.target.options[evt.target.selectedIndex].value;
     filteredDataRender(filterObject);
-  };
-  var filterWifiHandler = function (evt) {
+  });
+  var filterWifiHandler = window.debounce(function (evt) {
     filterObject.wifi = evt.target.checked;
     filteredDataRender(filterObject);
-  };
-  var filterDishwasherHandler = function (evt) {
+  });
+  var filterDishwasherHandler = window.debounce(function (evt) {
     filterObject.dishwasher = evt.target.checked;
     filteredDataRender(filterObject);
-  };
-  var filterParkingHandler = function (evt) {
+  });
+  var filterParkingHandler = window.debounce(function (evt) {
     filterObject.parking = evt.target.checked;
     filteredDataRender(filterObject);
-  };
-  var filterWasherHandler = function (evt) {
+  });
+  var filterWasherHandler = window.debounce(function (evt) {
     filterObject.washer = evt.target.checked;
     filteredDataRender(filterObject);
-  };
-  var filterElevatorHandler = function (evt) {
+  });
+  var filterElevatorHandler = window.debounce(function (evt) {
     filterObject.elevator = evt.target.checked;
     filteredDataRender(filterObject);
-  };
-  var filterConditionerHandler = function (evt) {
+  });
+  var filterConditionerHandler = window.debounce(function (evt) {
     filterObject.conditioner = evt.target.checked;
     filteredDataRender(filterObject);
-  };
+  });
 
   /**
    * Принимает на вход строку содержащую числа
