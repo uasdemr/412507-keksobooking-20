@@ -200,98 +200,15 @@ window.filter = (function () {
   };
 
   /**
-   * Функция фильтрации по наличию wi-fi
-   * @param {Object} obj
+   * Функция проверяет наличие свойства str объекта filterObject
+   * и если оно есть- фильтрует массив соответственно полученой строки
+   * @param {String} str
    */
-  var wifiFilter = function (obj) {
-    if (obj.wifi) {
+  var isOption = function (str) {
+    if (filterObject[str]) {
       filteredData = filteredData.filter(function (item) {
-        return item.offer.features.indexOf(filterWifi.value) !== -1;
+        return item.offer.features.indexOf(str) !== -1;
       });
-    }
-  };
-
-  /**
-   * Функция фильтрации по наличию посудомоечной машины
-   * @param {Object} obj
-   */
-  var dishwasherFilter = function (obj) {
-    if (obj.dishwasher) {
-      filteredData = filteredData.filter(function (item) {
-        return item.offer.features.indexOf(filterDishwasher.value) !== -1;
-      });
-    }
-  };
-
-  /**
-   * Функция фильтрации по наличию парковки
-   * @param {Object} obj
-   */
-  var parkingFilter = function (obj) {
-    if (obj.parking) {
-      filteredData = filteredData.filter(function (item) {
-        return item.offer.features.indexOf(filterParking.value) !== -1;
-      });
-    }
-  };
-
-  /**
-   * Функция фильтрации по наличию стиральной машины
-   * @param {Object} obj
-   */
-  var washerFilter = function (obj) {
-    if (obj.washer) {
-      filteredData = filteredData.filter(function (item) {
-        return item.offer.features.indexOf(filterWasher.value) !== -1;
-      });
-    }
-  };
-
-  /**
-   * Функция фильтрации по наличию лифта
-   * @param {Object} obj
-   */
-  var elevatorFilter = function (obj) {
-    if (obj.elevator) {
-      filteredData = filteredData.filter(function (item) {
-        return item.offer.features.indexOf(filterElevator.value) !== -1;
-      });
-    }
-  };
-
-  /**
-   * Функция фильтрации по наличию кондиционера
-   * @param {Object} obj
-   */
-  var conditionerFilter = function (obj) {
-    if (obj.conditioner) {
-      filteredData = filteredData.filter(function (item) {
-        return item.offer.features.indexOf(filterConditioner.value) !== -1;
-      });
-    }
-  };
-
-  /**
-   * Функция фильтрации по умолчанию.
-   * Проверяет объект фильтра на соответствие начальным установкам и
-   * если все результаты совпадают с дефолтными значениями, вызывает
-   * window.map.domRender с первоначальными данными
-   * @param {Object} obj
-   */
-  var defaultFilter = function () {
-    if (
-      filterObject.conditioner === false &&
-      filterObject.dishwasher === false &&
-      filterObject.elevator === false &&
-      filterObject.guest === 'any' &&
-      filterObject.parking === false &&
-      filterObject.price === 'Любая' &&
-      filterObject.rooms === 'any' &&
-      filterObject.type === 'any' &&
-      filterObject.washer === false &&
-      filterObject.wifi === false
-    ) {
-      window.map.domRender(window.form.data);
     }
   };
 
@@ -308,14 +225,12 @@ window.filter = (function () {
     priceFilter(obj);
     roomsFilter(obj);
     guestsFilter(obj);
-    wifiFilter(obj);
-    dishwasherFilter(obj);
-    parkingFilter(obj);
-    washerFilter(obj);
-    elevatorFilter(obj);
-    conditionerFilter(obj);
-    defaultFilter(obj);
-
+    isOption('wifi');
+    isOption('dishwasher');
+    isOption('parking');
+    isOption('washer');
+    isOption('elevator');
+    isOption('conditioner');
 
     window.form.domCardRemover();
     window.map.pinsRemover();
