@@ -10,7 +10,8 @@ window.load = (function () {
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         window.form.data = xhr.response;
-        onSuccess(xhr.response);
+        window.filter.defaultFilterObjectSetter();
+        onSuccess(window.filter.filterObject);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
@@ -24,7 +25,7 @@ window.load = (function () {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000; // 10s
+    xhr.timeout = 10000;
 
     xhr.open('GET', url);
     xhr.send();
