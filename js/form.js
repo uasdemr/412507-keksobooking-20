@@ -1,6 +1,7 @@
 'use strict';
 
 window.form = (function () {
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var adForm = document.querySelector('.ad-form');
   var mapPinMain = document.querySelector('.map__pin--main');
   var data;
@@ -20,6 +21,37 @@ window.form = (function () {
   allFormsElemsArr = adFormFieldsets.concat(mapFiltersFormFieldsets);
   var successTemplate = document.querySelector('#success').content;
   var successMsg = successTemplate.querySelector('.success').cloneNode(true);
+  var adFormHeaderPreview = document.querySelector('.ad-form-header__preview img');
+  var adFormPhoto = document.querySelector('.ad-form__photo');
+
+  var fileChooser = function (evt) {
+    var file = evt.target.files[0];
+    var fileName = file.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+      if (evt.target.id === 'avatar') {
+        reader.addEventListener('load', function () {
+          adFormHeaderPreview.src = reader.result;
+        });
+        reader.readAsDataURL(file);
+      }
+      if (evt.target.id === 'images') {
+        reader.addEventListener('load', function () {
+          var img = document.createElement('img');
+          img.src = reader.result;
+          adFormPhoto.append(img);
+        });
+        reader.readAsDataURL(file);
+      }
+    }
+  };
+
+  adForm.addEventListener('change', fileChooser);
 
   var titleInputHandler = function () {
     window.formValidation.titleVerify(title);
