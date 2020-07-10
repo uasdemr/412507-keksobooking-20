@@ -1,16 +1,7 @@
 'use strict';
 
 window.filter = (function () {
-  var housingType = document.querySelector('#housing-type');
-  var housingPrice = document.querySelector('#housing-price');
-  var housingRooms = document.querySelector('#housing-rooms');
-  var housingGuest = document.querySelector('#housing-guests');
-  var filterWifi = document.querySelector('#filter-wifi');
-  var filterDishwasher = document.querySelector('#filter-dishwasher');
-  var filterParking = document.querySelector('#filter-parking');
-  var filterWasher = document.querySelector('#filter-washer');
-  var filterElevator = document.querySelector('#filter-elevator');
-  var filterConditioner = document.querySelector('#filter-conditioner');
+  var mapFilters = document.querySelector('.map__filters');
   var fullData = [];
   var filteredData;
 
@@ -45,48 +36,30 @@ window.filter = (function () {
     };
   };
 
-  var housingTypeHandler = window.debounce(function (evt) {
-    filterObject.type = evt.target.value;
-    filteredDataRender(filterObject);
-  });
+  /**
+   * Принимает объект события, устанавливает фильтр в зависимости от события
+   * и вызывает рендер, передавая у него измененный объект опций фильтрации
+   * @param {Object} evt
+   */
+  var mapFiltersHandler = function (evt) {
+    if (evt.target.id === 'housing-type') {
+      filterObject.type = evt.target.value;
+    }
+    if (evt.target.id === 'housing-price') {
+      filterObject['price'] = evt.target.options[evt.target.selectedIndex].text;
+    }
+    if (evt.target.id === 'housing-rooms') {
+      filterObject['rooms'] = evt.target.options[evt.target.selectedIndex].value;
+    }
+    if (evt.target.id === 'housing-guests') {
+      filterObject.guest = evt.target.options[evt.target.selectedIndex].value;
+    }
+    if (evt.target.id.includes('filter')) {
+      filterObject[evt.target.value] = evt.target.checked;
+    }
 
-  var housingPriceHandler = window.debounce(function (evt) {
-    filterObject.price = evt.target.options[evt.target.selectedIndex].text;
     filteredDataRender(filterObject);
-  });
-
-  var housingRoomsHandler = window.debounce(function (evt) {
-    filterObject.rooms = evt.target.options[evt.target.selectedIndex].value;
-    filteredDataRender(filterObject);
-  });
-  var housingGuestHandler = window.debounce(function (evt) {
-    filterObject.guest = evt.target.options[evt.target.selectedIndex].value;
-    filteredDataRender(filterObject);
-  });
-  var filterWifiHandler = window.debounce(function (evt) {
-    filterObject.wifi = evt.target.checked;
-    filteredDataRender(filterObject);
-  });
-  var filterDishwasherHandler = window.debounce(function (evt) {
-    filterObject.dishwasher = evt.target.checked;
-    filteredDataRender(filterObject);
-  });
-  var filterParkingHandler = window.debounce(function (evt) {
-    filterObject.parking = evt.target.checked;
-    filteredDataRender(filterObject);
-  });
-  var filterWasherHandler = window.debounce(function (evt) {
-    filterObject.washer = evt.target.checked;
-    filteredDataRender(filterObject);
-  });
-  var filterElevatorHandler = window.debounce(function (evt) {
-    filterObject.elevator = evt.target.checked;
-    filteredDataRender(filterObject);
-  });
-  var filterConditionerHandler = window.debounce(function (evt) {
-    filterObject.conditioner = evt.target.checked;
-    filteredDataRender(filterObject);
-  });
+  };
 
   /**
    * Принимает на вход строку содержащую числа
@@ -218,7 +191,7 @@ window.filter = (function () {
    * исходные данные.
    * @param {Object} obj
    */
-  var filteredDataRender = function (obj) {
+  var filteredDataRender = window.debounce(function (obj) {
     fullData = window.form.data.slice();
 
     typeFilter(obj);
@@ -235,19 +208,9 @@ window.filter = (function () {
     window.form.domCardRemover();
     window.map.pinsRemover();
     window.map.domRender(filteredData);
-  };
+  });
 
-  housingType.addEventListener('change', housingTypeHandler);
-  housingPrice.addEventListener('change', housingPriceHandler);
-  housingRooms.addEventListener('change', housingRoomsHandler);
-  housingGuest.addEventListener('change', housingGuestHandler);
-
-  filterWifi.addEventListener('change', filterWifiHandler);
-  filterDishwasher.addEventListener('change', filterDishwasherHandler);
-  filterParking.addEventListener('change', filterParkingHandler);
-  filterWasher.addEventListener('change', filterWasherHandler);
-  filterElevator.addEventListener('change', filterElevatorHandler);
-  filterConditioner.addEventListener('change', filterConditionerHandler);
+  mapFilters.addEventListener('change', mapFiltersHandler);
 
   return {
     filteredDataRender: filteredDataRender,
