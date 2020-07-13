@@ -12,7 +12,7 @@ window.main = (function () {
 
   var windowOnloadHandler = function () {
     window.form.setAddress(mapPinMain);
-    window.form.formDisable(allFormsElemsArr);
+    window.form.formElementsEnabler(allFormsElemsArr);
     mapPinMain.addEventListener('click', window.mainPin.mapPinMainAddHandlers, {once: true});
     mapPinMain.addEventListener('keydown', window.mainPin.mapPinMainAddHandlers, {once: true});
   };

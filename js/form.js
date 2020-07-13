@@ -162,7 +162,7 @@ window.form = (function () {
         adForm.reset();
         mapFiltersForm.reset();
         window.filter.defaultFilterObjectSetter();
-        window.form.formDisable(allFormsElemsArr);
+        window.form.formElementsEnabler(allFormsElemsArr);
         window.map.pinsRemover();
         window.map.mapDeactivator();
         formDeactivator();
@@ -178,7 +178,7 @@ window.form = (function () {
     adForm.reset();
     mapFiltersForm.reset();
     window.filter.defaultFilterObjectSetter();
-    window.form.formDisable(allFormsElemsArr);
+    window.form.formElementsEnabler(allFormsElemsArr);
     window.map.pinsRemover();
     window.map.mapDeactivator();
     window.form.domCardRemover();
@@ -197,7 +197,7 @@ window.form = (function () {
   };
 
   return {
-    formDisable: function (elements) {
+    formElementsEnabler: function (elements) {
       elements.forEach(function (item) {
         item.setAttribute('disabled', 'false');
       });
