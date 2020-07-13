@@ -5,7 +5,6 @@ window.map = (function () {
   var mapPins = document.querySelector('.map__pins');
   var mainMap = document.querySelector('.map');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
-  var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = Array.prototype.slice.call(adForm.children);
   var mapFiltersForm = document.querySelector('.map__filters');
@@ -55,7 +54,7 @@ window.map = (function () {
     },
 
     mapActivator: function () {
-      map.classList.remove('map--faded');
+      mainMap.classList.remove('map--faded');
       adForm.classList.remove('ad-form--disabled');
       window.form.formEnable(allFormsElemsArr);
       window.load.getJson('https://javascript.pages.academy/keksobooking/data', window.filter.filteredDataRender, onError);
