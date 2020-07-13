@@ -151,6 +151,20 @@ window.form = (function () {
     }
   };
 
+  var adFormHeaderPreviewClear = function () {
+    adFormHeaderPreview.src = 'img/muffin-grey.svg';
+  };
+
+  var adFormPhotoRemover = function () {
+    var imgs = adFormPhoto.querySelectorAll('img');
+    var arr = Array.from(imgs);
+    if (arr.length) {
+      arr.forEach(function (item) {
+        item.remove();
+      });
+    }
+  };
+
   var formSubmit = function (evt) {
     evt.preventDefault();
     formAddress.value = formAddress.placeholder;
@@ -166,6 +180,8 @@ window.form = (function () {
         window.map.pinsRemover();
         window.map.mapDeactivator();
         formDeactivator();
+        adFormHeaderPreviewClear();
+        adFormPhotoRemover();
         window.mainPin.mapPinMainSetCenter();
         mapPinMain.addEventListener('click', window.mainPin.mapPinMainAddHandlers, {once: true});
         mapPinMain.addEventListener('keydown', window.mainPin.mapPinMainAddHandlers, {once: true});
@@ -183,6 +199,8 @@ window.form = (function () {
     window.map.mapDeactivator();
     window.form.domCardRemover();
     formDeactivator();
+    adFormHeaderPreviewClear();
+    adFormPhotoRemover();
     window.main.windowOnloadHandler();
     window.mainPin.mapPinMainSetCenter();
     mapPinMain.focus();
