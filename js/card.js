@@ -36,7 +36,7 @@ window.card = (function () {
       var cardTextTime = mapsArticle.querySelector('.popup__text--time').cloneNode(true);
       var cardFeatures = mapsArticle.querySelector('.popup__features').cloneNode(true);
       var cardDescription = mapsArticle.querySelector('.popup__description').cloneNode(true);
-      var cardPhotos = mapsArticle.querySelector('.popup__photos').cloneNode(true);
+      var cardPhotos = mapsArticle.querySelector('.popup__photos').cloneNode(false);
       var cardAvatar = mapsArticle.querySelector('.popup__avatar').cloneNode(true);
       var popupСlose = mapsArticle.querySelector('.popup__close').cloneNode(true);
 
@@ -67,14 +67,6 @@ window.card = (function () {
         var cardImg = mapsArticle.querySelector('.popup__photos').querySelector('.popup__photo').cloneNode(true);
         cardImg.src = dataSet.offer.photos[j];
         cardPhotos.appendChild(cardImg);
-      }
-
-      var imgs = cardPhotos.getElementsByTagName('img');
-      // Удаляет все img с неверным src
-      for (var m = 0; m < imgs.length; m++) {
-        if (imgs[m].src.includes('localhost')) {
-          imgs[m].remove();
-        }
       }
 
       card.append(cardTitle, cardAddress, cardPrice, cardPopupType, cardCapacity, cardTextTime);
