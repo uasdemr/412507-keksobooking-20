@@ -1,6 +1,14 @@
 'use strict';
 
 window.formValidation = (function () {
+  var PRICE_MAX_VALUE = 1000000;
+  var PRICE_MIN_VALUE = 0;
+  var MIN_HOUSING_COST = {
+    BUNGALO: 0,
+    FLAT: 1000,
+    HOUSE: 5000,
+    PALACE: 10000
+  };
   var price = document.querySelector('#price');
   var timein = document.querySelector('#timein');
   var timeout = document.querySelector('#timeout');
@@ -32,7 +40,7 @@ window.formValidation = (function () {
 */
     priceVerify: function (elem) {
       var msg = '';
-      if (parseInt(elem.value, 10) <= 1000000 && parseInt(elem.value, 10) >= 0) {
+      if (parseInt(elem.value, 10) <= PRICE_MAX_VALUE && parseInt(elem.value, 10) >= PRICE_MIN_VALUE) {
         elem.setCustomValidity('');
       } else if (!Number(parseInt(elem.value, 10))) {
         msg = 'Цена исчисляется в цифровом эквиваленте.';
@@ -48,14 +56,23 @@ window.formValidation = (function () {
      * @param {Object} elem
      */
     typeCorrelator: function (elem) {
-      if (elem.value === 'bungalo') {
-        price.min = 0;
-      } else if (elem.value === 'flat') {
-        price.min = 1000;
-      } else if (elem.value === 'house') {
-        price.min = 5000;
-      } else if (elem.value === 'palace') {
-        price.min = 10000;
+      switch (elem.value) {
+        case 'bungalo':
+          price.min = MIN_HOUSING_COST.BUNGALO;
+          price.placeholder = MIN_HOUSING_COST.BUNGALO;
+          break;
+        case 'flat':
+          price.min = MIN_HOUSING_COST.FLAT;
+          price.placeholder = MIN_HOUSING_COST.FLAT;
+          break;
+        case 'house':
+          price.min = MIN_HOUSING_COST.HOUSE;
+          price.placeholder = MIN_HOUSING_COST.HOUSE;
+          break;
+        case 'palace':
+          price.min = MIN_HOUSING_COST.PALACE;
+          price.placeholder = MIN_HOUSING_COST.PALACE;
+          break;
       }
     },
 

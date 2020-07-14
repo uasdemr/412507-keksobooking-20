@@ -1,6 +1,10 @@
 'use strict';
 (function () {
-  var url = 'https://javascript.pages.academy/keksobooking';
+  var URL_TO_DOWNLOAD_DATA = 'https://javascript.pages.academy/keksobooking';
+  var StatusCode = {
+    OK: 200,
+    BAD_REQUEST: 400
+  };
 
   window.upload = function (data, onSuccess) {
     var xhr = new XMLHttpRequest();
@@ -55,15 +59,15 @@
     };
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === StatusCode.OK) {
         onSuccess(xhr.response);
-      } else if (xhr.status === 400) {
+      } else if (xhr.status === StatusCode.BAD_REQUEST) {
         onErrorMsg();
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
 
-    xhr.open('POST', url);
+    xhr.open('POST', URL_TO_DOWNLOAD_DATA);
     xhr.send(data);
   };
 })();

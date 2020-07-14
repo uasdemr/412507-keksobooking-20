@@ -8,11 +8,12 @@ window.main = (function () {
   var mapFiltersFormFieldsets = Array.prototype.slice.call(mapFiltersForm.children);
   var allFormsElemsArr = [];
   allFormsElemsArr = adFormFieldsets.concat(mapFiltersFormFieldsets);
-
+  var type = document.querySelector('#type');
 
   var windowOnloadHandler = function () {
     window.form.setAddress(mapPinMain);
     window.form.formElementsEnabler(allFormsElemsArr);
+    window.formValidation.typeCorrelator(type);
     mapPinMain.addEventListener('click', window.mainPin.mapPinMainAddHandlers, {once: true});
     mapPinMain.addEventListener('keydown', window.mainPin.mapPinMainAddHandlers, {once: true});
   };

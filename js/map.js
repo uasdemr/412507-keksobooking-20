@@ -57,7 +57,7 @@ window.map = (function () {
       mainMap.classList.remove('map--faded');
       adForm.classList.remove('ad-form--disabled');
       window.form.formEnable(allFormsElemsArr);
-      window.load.getJson('https://javascript.pages.academy/keksobooking/data', window.filter.filteredDataRender, onError);
+      window.load.getJson(window.filter.filteredDataRender, onError);
     },
 
     mapDeactivator: function () {

@@ -12,7 +12,7 @@ window.form = (function () {
   var timeout = document.querySelector('#timeout');
   var roomNumber = document.querySelector('#room_number');
   var mapPins = document.querySelector('.map__pins');
-  var formAddress = document.getElementById('address');
+  var formAddress = document.querySelector('#address');
   var map = document.querySelector('.map');
   var mapFiltersForm = document.querySelector('.map__filters');
   var adFormFieldsets = Array.prototype.slice.call(adForm.children);
@@ -25,30 +25,36 @@ window.form = (function () {
   var adFormPhoto = document.querySelector('.ad-form__photo');
 
   var fileChooser = function (evt) {
-    var file = evt.target.files[0];
-    var fileName = file.name.toLowerCase();
 
-    var matches = FILE_TYPES.some(function (it) {
-      return fileName.endsWith(it);
-    });
+    if (evt.target.id === 'avatar' || evt.target.id === 'images') {
+      var file = evt.target.files[0];
+      var fileName = file.name.toLowerCase();
 
-    if (matches) {
-      var reader = new FileReader();
-      if (evt.target.id === 'avatar') {
-        reader.addEventListener('load', function () {
-          adFormHeaderPreview.src = reader.result;
-        });
-        reader.readAsDataURL(file);
-      }
-      if (evt.target.id === 'images') {
-        reader.addEventListener('load', function () {
-          var img = document.createElement('img');
-          img.src = reader.result;
-          adFormPhoto.append(img);
-        });
-        reader.readAsDataURL(file);
+      var matches = FILE_TYPES.some(function (it) {
+        return fileName.endsWith(it);
+      });
+
+      if (matches) {
+        var reader = new FileReader();
+        if (evt.target.id === 'avatar') {
+          reader.addEventListener('load', function () {
+            adFormHeaderPreview.src = reader.result;
+          });
+          reader.readAsDataURL(file);
+        }
+        if (evt.target.id === 'images') {
+          reader.addEventListener('load', function () {
+            var img = document.createElement('img');
+            img.src = reader.result;
+            img.style.width = '70px';
+            img.style.height = '70px';
+            adFormPhoto.append(img);
+          });
+          reader.readAsDataURL(file);
+        }
       }
     }
+
   };
 
   adForm.addEventListener('change', fileChooser);

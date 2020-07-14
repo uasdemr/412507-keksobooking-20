@@ -38,7 +38,7 @@ window.card = (function () {
       var cardDescription = mapsArticle.querySelector('.popup__description').cloneNode(true);
       var cardPhotos = mapsArticle.querySelector('.popup__photos').cloneNode(false);
       var cardAvatar = mapsArticle.querySelector('.popup__avatar').cloneNode(true);
-      var popupСlose = mapsArticle.querySelector('.popup__close').cloneNode(true);
+      var popupClose = mapsArticle.querySelector('.popup__close').cloneNode(true);
 
       cardTitle.textContent = dataSet.offer.title;
       cardAddress.textContent = dataSet.offer.address;
@@ -74,7 +74,7 @@ window.card = (function () {
       if (cardFeatures.textContent) {
         card.append(cardFeatures);
       }
-      card.append(cardDescription, cardPhotos, cardAvatar, popupСlose);
+      card.append(cardDescription, cardPhotos, cardAvatar, popupClose);
 
       return card;
     },

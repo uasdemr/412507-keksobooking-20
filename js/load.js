@@ -1,14 +1,18 @@
 'use strict';
-
+var URL_TO_UPLOAD_DATA = 'https://javascript.pages.academy/keksobooking/data';
+var UPLOAD_TIMEOUT = 10000;
+var StatusCode = {
+  OK: 200
+};
 window.load = (function () {
 
-  var getJson = function (url, onSuccess, onError) {
+  var getJson = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
 
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === StatusCode.OK) {
         window.form.data = xhr.response;
         window.filter.defaultFilterObjectSetter();
         onSuccess(window.filter.filterObject);
@@ -25,9 +29,9 @@ window.load = (function () {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = UPLOAD_TIMEOUT;
 
-    xhr.open('GET', url);
+    xhr.open('GET', URL_TO_UPLOAD_DATA);
     xhr.send();
   };
 
