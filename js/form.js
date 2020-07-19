@@ -2,6 +2,7 @@
 
 window.form = (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var DELTA_SHIFT = 1;
   var adForm = document.querySelector('.ad-form');
   var mapPinMain = document.querySelector('.map__pin--main');
   var data;
@@ -68,7 +69,7 @@ window.form = (function () {
       if (optionsArr[i].indexOf('1') !== -1) {
         opt.setAttribute('selected', 'true');
       }
-      opt.value = i + 1;
+      opt.value = i + DELTA_SHIFT;
       opt.text = optionsArr[i];
       select.add(opt);
       if (optionsArr[i].indexOf('не для гостей') !== -1) {
@@ -100,7 +101,7 @@ window.form = (function () {
     window.formValidation.priceVerify(price);
   };
 
-  var typeChangeHandler = function () {
+  var typeClickHandler = function () {
     window.formValidation.typeCorrelator(type);
   };
 
@@ -153,7 +154,7 @@ window.form = (function () {
   var formValidityChecker = function () {
     titleInputHandler();
     priceInputHandler();
-    typeChangeHandler();
+    typeClickHandler();
     timeinChangeHandler();
     timeoutChangeHandler();
   };
@@ -269,7 +270,7 @@ window.form = (function () {
       inputTypeFileAcceptSetter();
       title.addEventListener('input', titleInputHandler);
       price.addEventListener('input', priceInputHandler);
-      type.addEventListener('change', typeChangeHandler);
+      type.addEventListener('click', typeClickHandler);
       timein.addEventListener('change', timeinChangeHandler);
       timeout.addEventListener('change', timeoutChangeHandler);
       roomNumber.addEventListener('click', roomNumberClickListener);
