@@ -54,8 +54,41 @@ window.form = (function () {
         }
       }
     }
-
   };
+
+  var capacityDefaultSetter = function () {
+    var optionsArr = ['для 1 гостя', 'для 2 гостей', 'для 3 гостей', 'не для гостей'];
+    var capacity = document.querySelector('#capacity');
+    var select = document.createElement('select');
+    select.name = 'capacity';
+    select.id = 'capacity';
+    var opt;
+    for (var i = 0; i < optionsArr.length; i++) {
+      opt = new Option();
+      if (optionsArr[i].indexOf('1') !== -1) {
+        opt.setAttribute('selected', 'true');
+      }
+      opt.value = i + 1;
+      opt.text = optionsArr[i];
+      select.add(opt);
+      if (optionsArr[i].indexOf('не для гостей') !== -1) {
+        opt.value = 0;
+        opt.text = optionsArr[i];
+        select.add(opt);
+      }
+    }
+    capacity.replaceWith(select);
+  };
+
+  var pricePlaceholderDefaultSetter = function () {
+    price.placeholder = 1000;
+  };
+
+  var priceValueReset = function () {
+    price.value = '';
+  };
+
+  type.addEventListener('change', priceValueReset);
 
   adForm.addEventListener('change', fileChooser);
 
@@ -67,7 +100,7 @@ window.form = (function () {
     window.formValidation.priceVerify(price);
   };
 
-  var typeMouseDownHandler = function () {
+  var typeChangeHandler = function () {
     window.formValidation.typeCorrelator(type);
   };
 
@@ -79,7 +112,7 @@ window.form = (function () {
     window.formValidation.adFormElementTimeSynchronizer(timeout);
   };
 
-  var roomNumberChangeListener = function () {
+  var roomNumberClickListener = function () {
     window.formValidation.roomsCapacitySynchronizer(roomNumber);
   };
 
@@ -120,10 +153,9 @@ window.form = (function () {
   var formValidityChecker = function () {
     titleInputHandler();
     priceInputHandler();
-    typeMouseDownHandler();
+    typeChangeHandler();
     timeinChangeHandler();
     timeoutChangeHandler();
-    roomNumberChangeListener();
   };
 
   var onSuccessMsg = function () {
@@ -192,6 +224,8 @@ window.form = (function () {
         mapPinMain.addEventListener('click', window.mainPin.mapPinMainAddHandlers, {once: true});
         mapPinMain.addEventListener('keydown', window.mainPin.mapPinMainAddHandlers, {once: true});
         onSuccessMsg();
+        pricePlaceholderDefaultSetter();
+        capacityDefaultSetter();
       });
     }
   };
@@ -207,9 +241,11 @@ window.form = (function () {
     formDeactivator();
     adFormHeaderPreviewClear();
     adFormPhotoRemover();
-    window.main.windowOnloadHandler();
     window.mainPin.mapPinMainSetCenter();
+    window.main.windowOnloadHandler();
     mapPinMain.focus();
+    pricePlaceholderDefaultSetter();
+    capacityDefaultSetter();
   };
 
   var inputTypeFileAcceptSetter = function () {
@@ -233,10 +269,10 @@ window.form = (function () {
       inputTypeFileAcceptSetter();
       title.addEventListener('input', titleInputHandler);
       price.addEventListener('input', priceInputHandler);
-      type.addEventListener('mousedown', typeMouseDownHandler);
+      type.addEventListener('change', typeChangeHandler);
       timein.addEventListener('change', timeinChangeHandler);
       timeout.addEventListener('change', timeoutChangeHandler);
-      roomNumber.addEventListener('change', roomNumberChangeListener);
+      roomNumber.addEventListener('click', roomNumberClickListener);
       mapPins.addEventListener('click', mapPinsClickHandler);
       mapPins.addEventListener('keydown', mapPinsKeydownHandler);
       adForm.addEventListener('submit', formSubmit);
@@ -268,6 +304,7 @@ window.form = (function () {
         openedCard.remove();
       }
     },
+    pricePlaceholderDefaultSetter: pricePlaceholderDefaultSetter,
     data: data,
   };
 })();

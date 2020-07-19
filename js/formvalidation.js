@@ -52,7 +52,7 @@ window.formValidation = (function () {
     },
     /**
      *
-     * Изменяет атрибут min владельца события в соответствии с выбранным типом жилья
+     * Изменяет атрибут min и placeholder у элемента price в соответствии с выбранным типом жилья
      * @param {Object} elem
      */
     typeCorrelator: function (elem) {
@@ -101,7 +101,13 @@ window.formValidation = (function () {
       if (num === 100) {
         opt = new Option();
         opt.value = 0;
-        opt.text = 'Не для гостей';
+        opt.text = 'не для гостей';
+        select.add(opt);
+        capacity.replaceWith(select);
+      } else if (num === 1) {
+        opt = new Option();
+        opt.value = 1;
+        opt.text = 'для ' + num + ' гостя';
         select.add(opt);
         capacity.replaceWith(select);
       } else {
